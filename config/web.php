@@ -53,6 +53,7 @@ $config = [
         */
     ],
     'params' => $params,
+    'name' => 'NURE IAS',
 ];
 
 if (YII_ENV_DEV) {

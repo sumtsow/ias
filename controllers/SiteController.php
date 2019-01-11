@@ -12,6 +12,8 @@ use app\models\ContactForm;
 
 class SiteController extends Controller
 {
+    public $defaultAction = 'index';
+    
     /**
      * {@inheritdoc}
      */
@@ -63,7 +65,7 @@ class SiteController extends Controller
     {
         return $this->render('index');
     }
-
+    
     /**
      * Login action.
      *
