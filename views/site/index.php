@@ -6,20 +6,20 @@ $this->title = 'Навантаження по дисциплінах';
 ?>
 <div class="content">
     <ul class="nav nav-tabs" id="nav-tab" role="tablist">
-        <li  class="nav-item active">
+        <li class="nav-item active">
         <a class="nav-link" id="nav-index-tab" data-toggle="tab" href="#nav-index" role="tab" aria-controls="nav-index" aria-selected="true">Навантаження по дисциплінах</a>
         </li>
-        <li  class="nav-item">
+        <li class="nav-item">
         <a class="nav-link" id="nav-prof-tab" data-toggle="tab" href="#nav-prof" role="tab" aria-controls="nav-prof" aria-selected="false">Навантаження по викладачах</a>
         </li>
-        <li  class="nav-item">
+        <li class="nav-item">
         <a class="nav-link" id="nav-state-tab" data-toggle="tab" href="#nav-state" role="tab" aria-controls="nav-state" aria-selected="false">Особовий склад</a>
         </li>
     </ul>
 
 <div class="tab-content" id="nav-tabContent">
-    <div class="tab-pane fade show active" id="nav-index" role="tabpanel" aria-labelledby="nav-index-tab">
-    <table class="table table-striped table-hover mt-0">
+<div class="tab-pane fade" id="nav-index" role="tabpanel" aria-labelledby="nav-index-tab">
+<table class="table table-striped table-hover mt-0">
     <thead class="thead-inverse">
     <tr>
         <th scope="col">Дисципліна</th>
@@ -79,8 +79,8 @@ $this->title = 'Навантаження по дисциплінах';
     </tr>
     </tbody>
 </table>
-    </div>
-            <div class="tab-pane fade" id="nav-prof" role="tabpanel" aria-labelledby="nav-prof-tab">
+</div>
+<div class="tab-pane fade" id="nav-prof" role="tabpanel" aria-labelledby="nav-prof-tab">
 <table class="table table-striped table-hover mt-0">
     <thead>
     <tr>
@@ -144,8 +144,8 @@ $this->title = 'Навантаження по дисциплінах';
     </tr>
     </tbody>
 </table>
-            </div>
-            <div class="tab-pane fade" id="nav-state" role="tabpanel" aria-labelledby="nav-state-tab">
+</div>
+<div class="tab-pane fade" id="nav-state" role="tabpanel" aria-labelledby="nav-state-tab">
 <table class="table table-striped table-hover mt-0">
     <thead class="thead-inverse">
     <tr>
@@ -173,6 +173,6 @@ $this->title = 'Навантаження по дисциплінах';
     </tr>
     </tbody>
 </table>
-            </div>
+</div>
 </div>
 </div>
