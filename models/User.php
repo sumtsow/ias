@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "user".
@@ -17,13 +19,13 @@ use Yii;
  *
  * @property Image[] $images
  */
-class User extends \yii\db\ActiveRecord
+class User extends ActiveRecord implements IdentityInterface
 {
     //public $id;
     //public $username;
     //public $password;
-    public $authKey;
-    public $accessToken;
+    //public $authKey;
+    //public $accessToken;
 
     /*private static $users = [
         '100' => [
@@ -48,22 +50,16 @@ class User extends \yii\db\ActiveRecord
      */
     public static function findIdentity($id)
     {
-        return $this;
+        return static::findOne($id);
     }
 
     /**
      * {@inheritdoc}
      */
-    /*public static function findIdentityByAccessToken($token, $type = null)
+    public static function findIdentityByAccessToken($token, $type = null)
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
-        return null;
-    }*/
+        return static::findOne(['accesstoken' => $token]);
+    }
 
     /**
      * Finds user by email
@@ -103,7 +99,7 @@ class User extends \yii\db\ActiveRecord
      */
     public function getAuthKey()
     {
-        return $this->authKey;
+        return $this->authkey;
     }
 
     /**
