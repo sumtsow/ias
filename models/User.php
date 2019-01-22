@@ -26,7 +26,7 @@ class User extends ActiveRecord implements IdentityInterface
     //public $password;
     //public $authKey;
     //public $accessToken;
-
+    
     /*private static $users = [
         '100' => [
             'id' => '100',
@@ -69,21 +69,16 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByEmail($email)
     {
-        $result = null;
-        if ($this->email === $email) 
-        {
-            $result = $this;
-        }
-        return $result;
+        return static::findOne(['email' => $email]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function __get($property)
+    /*public function __get($property)
     {
         return $this->$property;
-    }
+    }*/
     
     
     /**
@@ -99,7 +94,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getAuthKey()
     {
-        return $this->authkey;
+        return $this->auth_key;
     }
 
     /**
@@ -118,7 +113,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function validatePassword($password)
     {
-        return $this->password === $password;
+        return $this->password === md5($password);
     }
     
     /**
@@ -135,10 +130,11 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['lastname', 'firstname', 'email', 'password', 'role', 'created_at'], 'required'],
+            [['lastname', 'firstname', 'email', 'password', 'role', 'auth_key', 'created_at'], 'required'],
             [['role'], 'string'],
             [['created_at'], 'safe'],
             [['lastname', 'firstname', 'email'], 'string', 'max' => 256],
+            [['auth_key', 'access_token'], 'string', 'max' => 128],            
             [['password'], 'string', 'max' => 64],
         ];
     }
@@ -155,7 +151,9 @@ class User extends ActiveRecord implements IdentityInterface
             'email' => 'Email',
             'password' => 'Password',
             'role' => 'Role',
-            'created_at' => 'Created At',
+            'auth_key' => 'AuthKey',
+            'access_token' => 'Access Token',            
+            'created_at' => 'Created at',
         ];
     }
 
@@ -165,5 +163,19 @@ class User extends ActiveRecord implements IdentityInterface
     public function getImages()
     {
         return $this->hasMany(Image::className(), ['user_id' => 'id']);
+    }
+    
+    /**
+     * 
+     */    
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->authKey = \Yii::$app->security->generateRandomString();
+            }
+            return true;
+        }
+        return false;
     }
 }
