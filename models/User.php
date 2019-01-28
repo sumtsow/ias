@@ -15,6 +15,8 @@ use yii\web\IdentityInterface;
  * @property string $email
  * @property string $password
  * @property string $role
+ * @property string $auth_key
+ * @property string $access_token
  * @property string $created_at
  *
  * @property Image[] $images
@@ -26,6 +28,8 @@ class User extends ActiveRecord implements IdentityInterface
     //public $password;
     //public $authKey;
     //public $accessToken;
+    
+    public $role;
     
     /*private static $users = [
         '100' => [
@@ -44,6 +48,18 @@ class User extends ActiveRecord implements IdentityInterface
         ],
     ];*/
 
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct()
+    {
+        $this->role = 'user';
+        $auth = Yii::$app->authManager;
+        if($this->id) {
+                $this->role = $auth->getAssignments($this->id);
+        }
+        return true;
+    }    
 
     /**
      * {@inheritdoc}
@@ -58,7 +74,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::findOne(['accesstoken' => $token]);
+        return static::findOne(['access_token' => $token]);
     }
 
     /**
@@ -102,7 +118,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function validateAuthKey($authKey)
     {
-        return $this->authKey === $authKey;
+        return $this->getAuthKey() === $authKey;
     }
 
     /**
@@ -130,7 +146,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['lastname', 'firstname', 'email', 'password', 'role', 'auth_key', 'created_at'], 'required'],
+            [['lastname', 'firstname', 'email', 'password', 'role', 'auth_key', 'access_token', 'created_at'], 'required'],
             [['role'], 'string'],
             [['created_at'], 'safe'],
             [['lastname', 'firstname', 'email'], 'string', 'max' => 256],
