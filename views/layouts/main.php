@@ -45,8 +45,7 @@ $this->beginPage()
             ['label' => 'Contact', 'url' => ['/site/contact']],            
             ['label' => 'Gii', 'url' => ['/gii']],
             Yii::$app->user->isGuest ? (
-                    ['label' => 'Login', 'url' => ['/site/login'],
-                    'label' => 'Sign Up', 'url' => ['/site/reg']]
+                    ['label' => 'Login', 'url' => ['/site/login']]
                 ) : (
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
@@ -56,8 +55,11 @@ $this->beginPage()
                 )
                 . Html::endForm()
                 . '</li>'
-            )
-        ],
+            ),
+            Yii::$app->user->isGuest ? (
+                    ['label' => 'Register', 'url' => ['/user/create']]
+                ) : ([]),
+        ]
     ]);
     NavBar::end();
     ?>

@@ -30,6 +30,7 @@ class User extends ActiveRecord implements IdentityInterface
     //public $accessToken;
     
     public $role;
+    public $confirm;
     
     /*private static $users = [
         '100' => [
@@ -129,7 +130,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function validatePassword($password)
     {
-        return $this->password === md5($password);
+        return $this->password === Yii::$app->getSecurity()->generatePasswordHash($password);
     }
     
     /**

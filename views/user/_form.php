@@ -20,7 +20,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'role')->dropDownList([ 'user' => 'User', 'admin' => 'Admin', ], ['prompt' => '']) ?>
+    <?= $form->field($model, 'confirm')->passwordInput(['maxlength' => true]) ?>
+    
+    <?php /*$form->field($model, 'role')->dropDownList([ 'user' => 'User', 'admin' => 'Admin', ], ['prompt' => ''])*/ ?>
 
     <?= $form->field($model, 'created_at')->textInput() ?>
 
