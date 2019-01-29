@@ -45,8 +45,9 @@ $this->beginPage()
             ['label' => 'Contact', 'url' => ['/site/contact']],            
             ['label' => 'Gii', 'url' => ['/gii']],
             Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
+                    ['label' => 'Login', 'url' => ['/site/login'],
+                    'label' => 'Sign Up', 'url' => ['/site/reg']]
+                ) : (
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(
