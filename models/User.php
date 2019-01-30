@@ -30,7 +30,7 @@ class User extends ActiveRecord implements IdentityInterface
     //public $accessToken;
     
     public $role;
-    public $confirm;
+    public $password_repeat;
     
     /*private static $users = [
         '100' => [
@@ -131,6 +131,18 @@ class User extends ActiveRecord implements IdentityInterface
     }    
 
     /**
+     * Hash password
+     *
+     * @param string $password password to hash
+     * @return true
+     */
+    public function hashPassword($password)
+    {
+        $this->password = Yii::$app->getSecurity()->generatePasswordHash($password);
+        return true;
+    }
+    
+    /**
      * Validates password
      *
      * @param string $password password to validate
@@ -138,7 +150,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function validatePassword($password)
     {
-        return $this->password === Yii::$app->getSecurity()->generatePasswordHash($password);
+        return Yii::$app->getSecurity()->validatePassword($password, $this->password);
     }
     
     /**
@@ -155,12 +167,13 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['lastname', 'firstname', 'email', 'password', 'confirm'], 'required'],
+            [['lastname', 'firstname', 'email', 'password', 'password_repeat'], 'required'],
             [['role'], 'string'],
             [['created_at'], 'safe'],
             [['lastname', 'firstname', 'email'], 'string', 'max' => 256],
             [['auth_key', 'access_token'], 'string', 'max' => 128],            
-            [['password'], 'string', 'max' => 64],
+            [['password','password_repeat'], 'string', 'max' => 64],
+            ['password', 'compare'],
         ];
     }
 

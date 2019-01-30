@@ -16,18 +16,12 @@ class UserController extends Controller
     public function actionCreate()
     {
         $model = new User();
-        $request = Yii::$app->request;
-        
-        if ($model->load($request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
             if ($model->validate()) {
-                // form inputs are valid, do something here
+                $model->hashPassword($model->password);
                 $model->save(false);
                 $auth = Yii::$app->authManager;
-                $userRole = $auth->getRole('user');
-                $adminRole = $auth->getRole('admin');
-                $auth->assign($userRole, $model->getId());
-                $auth->assign($userRole, 2);
-                $auth->assign($adminRole, 1);
+                $auth->assign($auth->getRole('user'), $model->getId());
             }
             return $this->redirect('?r=site/index');            
         }

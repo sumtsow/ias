@@ -23,7 +23,7 @@ $this->beginPage()
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-    <script src="/docs/4.1/assets/js/vendor/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
 </head>
 <body>
 <?php $this->beginBody() ?>
@@ -58,7 +58,7 @@ $this->beginPage()
             ),
             Yii::$app->user->isGuest ? (
                     ['label' => 'Register', 'url' => ['/user/create']]
-                ) : ([]),
+                ) : (''),
         ]
     ]);
     NavBar::end();
