@@ -1,8 +1,8 @@
 <?php
-namespace app\commands;
+namespace app\controllers;
 
 use Yii;
-use yii\console\Controller;
+use yii\web\Controller;
 
 class RbacController extends Controller
 {

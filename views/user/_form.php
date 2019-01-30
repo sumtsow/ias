@@ -24,7 +24,7 @@ use yii\widgets\ActiveForm;
     
     <?php /*$form->field($model, 'role')->dropDownList([ 'user' => 'User', 'admin' => 'Admin', ], ['prompt' => ''])*/ ?>
 
-    <?= $form->field($model, 'created_at')->textInput() ?>
+    <?php /* $form->field($model, 'created_at')->textInput() */ ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

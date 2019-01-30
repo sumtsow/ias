@@ -121,6 +121,14 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->getAuthKey() === $authKey;
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function generateAuthKey()
+    {
+        return $this->__set('authKey', random_bytes(64));
+    }    
 
     /**
      * Validates password
@@ -147,7 +155,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['lastname', 'firstname', 'email', 'password', 'role', 'auth_key', 'access_token', 'created_at'], 'required'],
+            [['lastname', 'firstname', 'email', 'password', 'confirm'], 'required'],
             [['role'], 'string'],
             [['created_at'], 'safe'],
             [['lastname', 'firstname', 'email'], 'string', 'max' => 256],
@@ -189,7 +197,10 @@ class User extends ActiveRecord implements IdentityInterface
     {
         if (parent::beforeSave($insert)) {
             if ($this->isNewRecord) {
-                $this->authKey = \Yii::$app->security->generateRandomString();
+                $this->auth_key = \Yii::$app->security->generateRandomString();
+                $cookies = Yii::$app->request->cookies;
+                $this->access_token = $cookies->getValue('accessToken', '');
+                $this->created_at = date("Y-m-d H:i:s");;
             }
             return true;
         }
