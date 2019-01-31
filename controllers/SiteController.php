@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\User;
 
 class SiteController extends Controller
 {
@@ -63,6 +64,11 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $access_token = Yii::$app->request->get('access_token');
+        if(isset($access_token)) {
+            $identity = User::findIdentityByAccessToken($access_token);
+            $identity ? Yii::$app->user->login($identity) : null;
+        }
         return $this->render('index');
     }
     
@@ -94,8 +100,10 @@ class SiteController extends Controller
      */
     public function actionLogout()
     {
+        $user = User::findIdentity(Yii::$app->user->id);
+        $user->generateAccessToken();
+        $user->save(false);
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
 

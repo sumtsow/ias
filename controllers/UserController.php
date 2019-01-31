@@ -22,6 +22,7 @@ class UserController extends Controller
                 $model->save(false);
                 $auth = Yii::$app->authManager;
                 $auth->assign($auth->getRole('user'), $model->getId());
+                $model->sendRegistrationMail();
             }
             return $this->redirect('?r=site/index');            
         }

@@ -127,9 +127,18 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function generateAuthKey()
     {
-        return $this->__set('authKey', random_bytes(64));
+        //return $this->__set('auth_key', random_bytes(64));
+        return $this->__set('auth_key', \Yii::$app->security->generateRandomString());
     }    
-
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function generateAccessToken()
+    {
+        return $this->__set('access_token', \Yii::$app->security->generateRandomString());
+    }
+    
     /**
      * Hash password
      *
@@ -210,13 +219,32 @@ class User extends ActiveRecord implements IdentityInterface
     {
         if (parent::beforeSave($insert)) {
             if ($this->isNewRecord) {
-                $this->auth_key = \Yii::$app->security->generateRandomString();
-                $cookies = Yii::$app->request->cookies;
-                $this->access_token = $cookies->getValue('accessToken', '');
+                $this->generateAuthKey();
+                $this->generateAccessToken();
+                /*$cookies = Yii::$app->response->cookies;
+                $cookies->add(new \yii\web\Cookie([
+                    'name' => 'access_token',
+                    'value' => $this->access_token,
+                ]));*/
                 $this->created_at = date("Y-m-d H:i:s");;
             }
             return true;
         }
         return false;
+    }
+    
+        
+    /**
+     * 
+     */    
+    public function sendRegistrationMail()
+    {
+        $sender = Yii::$app->params['adminEmail'];
+        return Yii::$app->mailer->compose()
+            ->setFrom($sender)
+            ->setTo($this->email)
+            ->setSubject('Registration on NURE IRS Service')
+            ->setHtmlBody('<p>Click here to confirm registration on <a href="irs?access_token='.$this->access_token.'">NURE IRS</a></p>')
+            ->send();
     }
 }
