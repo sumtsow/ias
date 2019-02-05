@@ -64,10 +64,17 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $access_token = Yii::$app->request->get('access_token');
-        if(isset($access_token)) {
-            $identity = User::findIdentityByAccessToken($access_token);
-            $identity ? Yii::$app->user->login($identity) : null;
+        $identity = Yii::$app->user->identity;
+        if(!$identity) {
+            $access_token = Yii::$app->request->get('access_token');
+                if(isset($access_token)) {
+                    $identity = User::findIdentityByAccessToken($access_token);
+                    Yii::$app->user->login($identity);
+                    if(!$identity->__get('enabled')) {
+                        $identity->__set('enabled',true);
+                    }
+                    $identity->save(false);
+                }            
         }
         return $this->render('index');
     }
@@ -85,7 +92,7 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->goHome();
         }
 
         return $this->render('login', [

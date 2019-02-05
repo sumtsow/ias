@@ -14,7 +14,7 @@ use yii\web\IdentityInterface;
  * @property string $firstname
  * @property string $email
  * @property string $password
- * @property string $role
+ * @property tinyint $enabled
  * @property string $auth_key
  * @property string $access_token
  * @property string $created_at
@@ -29,25 +29,9 @@ class User extends ActiveRecord implements IdentityInterface
     //public $authKey;
     //public $accessToken;
     
-    public $role;
+    public $enabled;
+    public $role;    
     public $password_repeat;
-    
-    /*private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];*/
 
     /**
      * {@inheritdoc}
@@ -88,15 +72,6 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return static::findOne(['email' => $email]);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    /*public function __get($property)
-    {
-        return $this->$property;
-    }*/
-    
     
     /**
      * {@inheritdoc}
@@ -177,7 +152,6 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [['lastname', 'firstname', 'email', 'password', 'password_repeat'], 'required'],
-            [['role'], 'string'],
             [['created_at'], 'safe'],
             [['lastname', 'firstname', 'email'], 'string', 'max' => 256],
             [['auth_key', 'access_token'], 'string', 'max' => 128],            
@@ -197,6 +171,7 @@ class User extends ActiveRecord implements IdentityInterface
             'firstname' => 'Firstname',
             'email' => 'Email',
             'password' => 'Password',
+            'enabled' => 'Enabled',         
             'role' => 'Role',
             'auth_key' => 'AuthKey',
             'access_token' => 'Access Token',            
@@ -221,11 +196,6 @@ class User extends ActiveRecord implements IdentityInterface
             if ($this->isNewRecord) {
                 $this->generateAuthKey();
                 $this->generateAccessToken();
-                /*$cookies = Yii::$app->response->cookies;
-                $cookies->add(new \yii\web\Cookie([
-                    'name' => 'access_token',
-                    'value' => $this->access_token,
-                ]));*/
                 $this->created_at = date("Y-m-d H:i:s");;
             }
             return true;

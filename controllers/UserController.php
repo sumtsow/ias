@@ -24,7 +24,7 @@ class UserController extends Controller
                 $auth->assign($auth->getRole('user'), $model->getId());
                 $model->sendRegistrationMail();
             }
-            return $this->redirect('?r=site/index');            
+            return $this->goHome();            
         }
         
         return $this->render('create', [

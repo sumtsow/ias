@@ -56,9 +56,8 @@ $this->beginPage()
                 . Html::endForm()
                 . '</li>'
             ),
-            Yii::$app->user->isGuest ? (
-                    ['label' => 'Register', 'url' => ['/user/create']]
-                ) : (''),
+            Yii::$app->user->isGuest ? (['label' => 'Register', 'url' => ['/user/create']]) : 
+                (['label' => 'Dashboard', 'url' => ['/dashboard']]),
         ]
     ]);
     NavBar::end();
