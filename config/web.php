@@ -54,14 +54,28 @@ $config = [
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
         ],
-        /*
+        
         'urlManager' => [
+            'ruleConfig' => ['class' => 'yii\web\UrlRule'],
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            /*'normalizer' => [
+                'class' => 'yii\web\UrlNormalizer',
+                'collapseSlashes' => true,
+                'normalizeTrailingSlash' => true,
+            ],*/
             'rules' => [
+                'dashboard' => 'dashboard',
+
+                'POST <controller:[\w-]+>s' => '<controller>/create',
+                '<controller:[\w-]+>s' => '<controller>/index',
+
+                'PUT <controller:[\w-]+>/<id:\d+>'    => '<controller>/update',
+                'DELETE <controller:[\w-]+>/<id:\d+>' => '<controller>/delete',
+                '<controller:[\w-]+>/<id:\d+>'        => '<controller>/view',
             ],
         ],
-        */
+        
     ],
     'params' => $params,
     'name' => 'NURE IRS',
