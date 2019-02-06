@@ -15,6 +15,11 @@ class DashboardController extends Controller
                 'class' => AccessControl::className(),
                 'only' => ['index'],
                 'rules' => [
+                    /*[
+                        'allow' => true,
+                        'actions' => ['index'],
+                        'roles' => ['admin'],
+                    ],*/
                     [
                         'allow' => true,
                         'actions' => ['index'],

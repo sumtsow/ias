@@ -54,6 +54,9 @@ $config = [
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
         ],
+        /*'authManager' => [
+            'class' => 'app\components\DbManager'
+        ],*/
         
         'urlManager' => [
             'ruleConfig' => ['class' => 'yii\web\UrlRule'],
