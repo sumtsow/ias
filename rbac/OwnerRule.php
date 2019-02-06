@@ -19,7 +19,7 @@ class OwnerRule extends Rule
      */
     public function execute($user, $item, $params)
     {
-        return isset($params['post']) ? $params['post']->owner == $user : false;
+        return isset($params['user']) ? $params['user']->id == $user : false;
     }
 }
 

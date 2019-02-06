@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use yii\web\Controller;
+use yii\web\Request;
 use yii\filters\AccessControl;
 use app\models\User;
 
@@ -17,12 +18,15 @@ class UserController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['create'],
+                'only' => ['index', 'update', 'create'],
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index','update'],
-                        'roles' => ['updateOwnProfile'],
+                        'actions' => ['index', 'update'],
+                        'roles' => ['updateOwnProfile', 'admin'],
+                        'roleParams' => function($rule) {
+                            return ['user' => User::findOne(Yii::$app->request->get('id'))];
+                        },
                     ],
                     [
                         'allow' => true,
