@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use yii\db\Query;
 
 /**
  * This is the model class for table "user".
@@ -28,22 +29,9 @@ class User extends ActiveRecord implements IdentityInterface
     //public $password;
     //public $authKey;
     //public $accessToken;
+    //public $role;
     
-    public $role;    
     public $password_repeat;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct()
-    {
-        $this->role = 'user';
-        $auth = Yii::$app->authManager;
-        if($this->id) {
-                $this->role = $auth->getAssignments($this->id);
-        }
-        return true;
-    }    
 
     /**
      * {@inheritdoc}
@@ -178,6 +166,15 @@ class User extends ActiveRecord implements IdentityInterface
         ];
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRole()
+    {
+        $rows = (new Query())->select(['item_name'])->from('auth_assignment')->where(['user_id' => $this->id])->limit(1)->one();
+        return $rows['item_name'];
+    }
+    
     /**
      * @return \yii\db\ActiveQuery
      */

@@ -18,12 +18,20 @@ class UserController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index', 'update', 'create'],
+                'only' => ['index', 'view', 'update', 'create', 'switch', 'delete'],
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'update'],
+                        'actions' => ['update', 'view'],
                         'roles' => ['updateOwnProfile', 'admin'],
+                        'roleParams' => function($rule) {
+                            return ['user' => User::findOne(Yii::$app->request->get('id'))];
+                        },
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'create', 'switch', 'delete'],
+                        'roles' => ['admin'],
                         'roleParams' => function($rule) {
                             return ['user' => User::findOne(Yii::$app->request->get('id'))];
                         },
@@ -48,26 +56,37 @@ class UserController extends Controller
             'users' => $users,
         ]);
     }
-
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function actionView($id)
+    {
+        $user = User::findOne($id);
+        return $this->render('view', [
+            'user' => $user,
+        ]);
+    }
+    
     /**
      * {@inheritdoc}
      */    
     public function actionCreate()
     {
-        $model = new User();
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->validate()) {
-                $model->hashPassword($model->password);
-                $model->save(false);
+        $user = new User();
+        if ($user->load(Yii::$app->request->post())) {
+            if ($user->validate()) {
+                $user->hashPassword($user->password);
+                $user->save(false);
                 $auth = Yii::$app->authManager;
-                $auth->assign($auth->getRole('user'), $model->getId());
-                $model->sendRegistrationMail();
+                $auth->assign($auth->getRole('user'), $user->getId());
+                $user->sendRegistrationMail();
             }
             return $this->goHome();            
         }
         
         return $this->render('create', [
-            'model' => $model,
+            'user' => $user,
         ]);
     }
 
@@ -76,20 +95,49 @@ class UserController extends Controller
      */        
     public function actionUpdate($id)
     {
-        $model = User::findIdentity($id);
-        if (isset($model)) {
-            if ($model->load(Yii::$app->request->post()))
+        $user = User::findIdentity($id);
+        if (isset($user)) {
+            if ($user->load(Yii::$app->request->post()))
             {
-                if ($model->validate()) {
-                    $model->hashPassword($model->password);
-                    $model->save(false);
+                if ($user->validate()) {
+                    $user->hashPassword($user->password);
+                    $user->save(false);
             }
             
             }
         return $this->render('update', [
-            'model' => $model,
+            'user' => $user,
         ]);            
         }
         return $this->goBack();        
+    }
+        
+    /**
+     * {@inheritdoc}
+     */        
+    public function actionSwitch($id)
+    {
+        $user = User::findOne($id);
+        if ($user)
+        {
+            $user->enabled = !$user->enabled;
+            $user->save(false);
+            return $this->redirect('/users'); 
+        }
+        return $this->goBack();       
+    }
+    
+    /**
+     * {@inheritdoc}
+     */        
+    public function actionDelete($id)
+    {
+        $user = User::findOne($id);
+        if ($user)
+        {
+            $user->delete();
+            return $this->redirect('/users'); 
+        }
+        return $this->goBack();       
     }
 }

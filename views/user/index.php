@@ -21,6 +21,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
             <th scope="col">lastname</th>
             <th scope="col">firstname</th>
             <th scope="col">email</th>
+            <th scope="col">role</th>
             <th scope="col">password</th>
             <th scope="col">enabled</th>
             <th scope="col">auth_key</th>
@@ -37,13 +38,17 @@ $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
             <td><?= $user->lastname; ?></td>
             <td><?= $user->firstname; ?></td>
             <td><?= $user->email; ?></td>
+            <td><?= $user->getRole(); ?></td>
             <td><?= ($user->password) ? 'set' : 'empty' ?></td>
             <td><?php $form = ActiveForm::begin([
                 'id' => 'userSwitch-form',
-                'options' => ['class' => 'form-horizontal'],
+                'action' => '/user/switch?id='.$user->id,
+                'options' => [
+                    'class' => 'form-horizontal',
+                    ],
             ]); ?>
-            <?= $form->field($user, 'enabled')->checkbox()->on('Click', 'this.form.submit();') ?>
-            <?php ActiveForm::end() ?></td>
+            <?= $form->field($user, 'enabled')->checkbox(['onChange' => 'this.form.submit();']); ?>
+            <?php ActiveForm::end(); ?></td>
             <td><?= ($user->auth_key) ? 'set' : 'empty' ?></td>
             <td><?= ($user->access_token) ? 'set' : 'empty' ?></td>
             <td><?= $user->created_at; ?></td>
@@ -52,3 +57,4 @@ $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
     </tbody>
 </table>
 </div>
+<a class="btn btn-primary" href="/user/create">Create New User</a>

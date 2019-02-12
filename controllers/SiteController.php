@@ -146,4 +146,12 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function actionUsers()
+    {
+        return $this->redirect('/users');
+    }
 }

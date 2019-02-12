@@ -1,9 +1,19 @@
 <?php
 /* @var $this yii\web\View */
-?>
-<h1>category/index</h1>
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
-<p>
-    You may change the content of this page by modifying
-    the file <code><?= __FILE__; ?></code>.
-</p>
+?>
+<div class="site-category-index">
+
+    <?php $form = ActiveForm::begin(); ?>
+
+        <?= $form->field($model, 'name') ?>
+        <?= $form->field($model, 'created_at') ?>
+    
+        <div class="form-group">
+            <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
+        </div>
+    <?php ActiveForm::end(); ?>
+
+</div><!-- site-category-index -->
