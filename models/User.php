@@ -29,7 +29,6 @@ class User extends ActiveRecord implements IdentityInterface
     //public $authKey;
     //public $accessToken;
     
-    public $enabled;
     public $role;    
     public $password_repeat;
 

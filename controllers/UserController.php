@@ -43,7 +43,10 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $users = User::find()->orderBy('id')->all();
+        return $this->render('index', [
+            'users' => $users,
+        ]);
     }
 
     /**
