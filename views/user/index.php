@@ -38,7 +38,20 @@ $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
             <td><?= $user->lastname; ?></td>
             <td><?= $user->firstname; ?></td>
             <td><?= $user->email; ?></td>
-            <td><?= $user->getRole(); ?></td>
+            <td><?php $form = ActiveForm::begin([
+                'id' => 'userRole-form',
+                'action' => '/user/role?id='.$user->id,
+                'options' => [
+                    'class' => 'form-horizontal',
+                    ],
+            ]); ?>
+            <?= $form->field($user, 'role')
+                    ->checkbox([
+                        'onChange' => 'this.form.submit();',
+                        'enabled' => ($user->role === 'admin') ? 'enabled' : 'disabled',                        
+                        'label' => ($user->role === 'admin') ? 'admin' : 'user',
+                    ]); ?>
+            <?php ActiveForm::end(); ?></td>
             <td><?= ($user->password) ? 'set' : 'empty' ?></td>
             <td><?php $form = ActiveForm::begin([
                 'id' => 'userSwitch-form',
@@ -47,7 +60,11 @@ $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
                     'class' => 'form-horizontal',
                     ],
             ]); ?>
-            <?= $form->field($user, 'enabled')->checkbox(['onChange' => 'this.form.submit();']); ?>
+            <?= $form->field($user, 'enabled')
+                    ->checkbox([
+                        'onChange' => 'this.form.submit();',
+                        'label'=> ($user->enabled) ? 'true' : 'false',
+                    ]); ?>
             <?php ActiveForm::end(); ?></td>
             <td><?= ($user->auth_key) ? 'set' : 'empty' ?></td>
             <td><?= ($user->access_token) ? 'set' : 'empty' ?></td>
