@@ -18,11 +18,11 @@ class UserController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index', 'view', 'update', 'create', 'switch', 'delete'],
+                'only' => ['index', 'view', 'create', 'update', 'password', 'switch', 'role', 'delete'],
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['update', 'view'],
+                        'actions' => ['update', 'view', 'password'],
                         'roles' => ['updateOwnProfile', 'admin'],
                         'roleParams' => function($rule) {
                             return ['user' => User::findOne(Yii::$app->request->get('id'))];
@@ -30,7 +30,7 @@ class UserController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'create', 'switch', 'delete'],
+                        'actions' => ['index', 'create', 'switch', 'role', 'delete'],
                         'roles' => ['admin'],
                         'roleParams' => function($rule) {
                             return ['user' => User::findOne(Yii::$app->request->get('id'))];
@@ -77,10 +77,10 @@ class UserController extends Controller
         if ($user->load(Yii::$app->request->post())) {
             if ($user->validate()) {
                 $user->hashPassword($user->password);
-                $user->save(false);
                 $auth = Yii::$app->authManager;
                 $auth->assign($auth->getRole('user'), $user->getId());
                 $user->sendRegistrationMail();
+                $user->save(false);                
             }
             return $this->goHome();            
         }
@@ -97,15 +97,37 @@ class UserController extends Controller
     {
         $user = User::findIdentity($id);
         if (isset($user)) {
+            $post = Yii::$app->request->post();
+            if ($user->load(Yii::$app->request->post()))
+            {
+                if ($user->validate()) {
+                    $user->save(false);
+                    return $this->redirect('/users');
+                }
+            }
+        }
+        return $this->render('update', [
+            'user' => $user,
+        ]);        
+    }
+    
+    /**
+     * {@inheritdoc}
+     */        
+    public function actionPassword($id)
+    {
+        $user = User::findIdentity($id);
+        if (isset($user)) {
+            $post = Yii::$app->request->post();
             if ($user->load(Yii::$app->request->post()))
             {
                 if ($user->validate()) {
                     $user->hashPassword($user->password);
                     $user->save(false);
+                    return $this->redirect('/users');
+                }
             }
-            
-            }
-        return $this->render('update', [
+        return $this->render('password', [
             'user' => $user,
         ]);            
         }
@@ -122,6 +144,20 @@ class UserController extends Controller
         {
             $user->enabled = !$user->enabled;
             $user->save(false);
+            return $this->redirect('/users'); 
+        }
+        return $this->goBack();       
+    }
+        
+    /**
+     * {@inheritdoc}
+     */        
+    public function actionRole($id)
+    {
+        $user = User::findOne($id);
+        if ($user)
+        {
+            ($user->role == 'user') ? $user->setRole('admin') : $user->setRole('user');
             return $this->redirect('/users'); 
         }
         return $this->goBack();       

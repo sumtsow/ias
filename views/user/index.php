@@ -1,7 +1,7 @@
 <?php
 /* @var $this yii\web\View */
 use yii\helpers\Url;
-use yii\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 
 $this->registerCssFile('https://use.fontawesome.com/releases/v5.5.0/css/all.css', [
     'integrity' => 'sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU',
@@ -13,10 +13,10 @@ $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 ?>
 
 <div class="table-responsive">
-<table  class="table bg-white table-striped">
+<table class="table table-striped">
     <thead class="thead text-center">
         <tr>
-            <th colspan="2" scope="col">action</th>       
+            <th colspan="3" scope="col">action</th>       
             <th scope="col">id</th>
             <th scope="col">lastname</th>
             <th scope="col">firstname</th>
@@ -32,6 +32,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
     <tbody>
         <?php foreach($users as $user): ?>
         <tr>
+            <td><a href="<?= Url::to(['/user/'.$user->id]); ?>" class="badge" title="View"><span class="fa fa-eye"></span></a></td>
             <td><a href="<?= Url::to(['/user/update', 'id' => $user->id]); ?>" class="badge" title="Edit"><span class="fa fa-edit"></span></a></td>
             <td><a href="<?= Url::to(['/user/delete', 'id' => $user->id]); ?>" class="badge" title="Delete"><span class="fa fa-trash-alt"></span></a></td>
             <td><?= $user->id; ?></td>
@@ -42,13 +43,13 @@ $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
                 'id' => 'userRole-form',
                 'action' => '/user/role?id='.$user->id,
                 'options' => [
-                    'class' => 'form-horizontal',
+                    'class' => 'form'.(($user->role === 'admin') ? ' text-danger' : null),
                     ],
             ]); ?>
             <?= $form->field($user, 'role')
                     ->checkbox([
                         'onChange' => 'this.form.submit();',
-                        'enabled' => ($user->role === 'admin') ? 'enabled' : 'disabled',                        
+                        'checked' => ($user->role === 'admin') ? 'checked' : null,                        
                         'label' => ($user->role === 'admin') ? 'admin' : 'user',
                     ]); ?>
             <?php ActiveForm::end(); ?></td>
@@ -57,7 +58,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
                 'id' => 'userSwitch-form',
                 'action' => '/user/switch?id='.$user->id,
                 'options' => [
-                    'class' => 'form-horizontal',
+                    'class' => 'form',
                     ],
             ]); ?>
             <?= $form->field($user, 'enabled')

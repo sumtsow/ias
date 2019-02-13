@@ -7,6 +7,7 @@ use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use yii\db\Query;
 
+
 /**
  * This is the model class for table "user".
  *
@@ -173,6 +174,14 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $rows = (new Query())->select(['item_name'])->from('auth_assignment')->where(['user_id' => $this->id])->limit(1)->one();
         return $rows['item_name'];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function setRole($rolename)
+    {
+        return Yii::$app->db->createCommand()->update('auth_assignment', ['item_name' => $rolename], 'user_id = '.$this->id)->execute();
     }
     
     /**

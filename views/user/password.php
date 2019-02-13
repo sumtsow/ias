@@ -8,15 +8,13 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="user-form">
+<div class="password-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($user, 'lastname')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($user, 'password')->passwordInput(['maxlength' => true]) ?>
 
-    <?= $form->field($user, 'firstname')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($user, 'email')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($user, 'password_repeat')->passwordInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
