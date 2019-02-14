@@ -2,6 +2,7 @@
 /* @var $this yii\web\View */
 use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
 
 $this->registerCssFile('https://use.fontawesome.com/releases/v5.5.0/css/all.css', [
     'integrity' => 'sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU',
@@ -9,9 +10,10 @@ $this->registerCssFile('https://use.fontawesome.com/releases/v5.5.0/css/all.css'
     'rel' => 'stylesheet',
     ]);
 $this->title = 'Users List';
-$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Dashboard', 'url' => ['/dashboard']];
+$this->params['breadcrumbs'][] = ['label' => 'Users'];
 ?>
-
+<h1><?= Html::encode($this->title) ?></h1> 
 <div class="table-responsive">
 <table class="table table-striped">
     <thead class="thead text-center">

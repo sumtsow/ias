@@ -7,7 +7,10 @@ use yii\widgets\DetailView;
 /* @var $model app\models\User */
 
 $this->title = 'User '.$user->id;
-$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Dashboard', 'url' => ['/dashboard']];
+if(Yii::$app->user->can('admin')) {
+    $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
+}
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -18,13 +21,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Update', ['update', 'id' => $user->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Change Password', ['password', 'id' => $user->id], ['class' => 'btn btn-warning']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $user->id], [
+        <?php if(Yii::$app->user->can('admin') && Yii::$app->user->id != $user->id) :
+        echo Html::a('Delete', ['delete', 'id' => $user->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
-        ]) ?>
+        ]);
+        endif; ?>
     </p>
 
     <?= DetailView::widget([

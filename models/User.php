@@ -34,6 +34,17 @@ class User extends ActiveRecord implements IdentityInterface
     
     public $password_repeat;
 
+    const SCENARIO_UPDATE = 'update';
+    const SCENARIO_PASSWORD = 'password';
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_UPDATE] = ['lastname', 'firstname', 'email'];
+        $scenarios[self::SCENARIO_PASSWORD] = ['password', 'password_repeat'];
+        return $scenarios;
+    }    
+    
     /**
      * {@inheritdoc}
      */
@@ -145,6 +156,8 @@ class User extends ActiveRecord implements IdentityInterface
             [['auth_key', 'access_token'], 'string', 'max' => 128],            
             [['password','password_repeat'], 'string', 'max' => 64],
             ['password', 'compare'],
+            [['lastname', 'firstname', 'email'], 'required', 'on' => self::SCENARIO_UPDATE],
+            ['password', 'compare', 'on' => self::SCENARIO_PASSWORD],
         ];
     }
 

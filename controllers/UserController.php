@@ -63,6 +63,7 @@ class UserController extends Controller
     public function actionView($id)
     {
         $user = User::findOne($id);
+        $user->password = ($user->password) ? 'set' : 'empty';
         return $this->render('view', [
             'user' => $user,
         ]);
@@ -77,10 +78,10 @@ class UserController extends Controller
         if ($user->load(Yii::$app->request->post())) {
             if ($user->validate()) {
                 $user->hashPassword($user->password);
-                $auth = Yii::$app->authManager;
-                $auth->assign($auth->getRole('user'), $user->getId());
                 $user->sendRegistrationMail();
                 $user->save(false);                
+                $auth = Yii::$app->authManager;
+                $auth->assign($auth->getRole('user'), $user->getId());
             }
             return $this->goHome();            
         }
@@ -96,6 +97,7 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $user = User::findIdentity($id);
+        $user->scenario = User::SCENARIO_UPDATE;
         if (isset($user)) {
             $post = Yii::$app->request->post();
             if ($user->load(Yii::$app->request->post()))
@@ -104,6 +106,7 @@ class UserController extends Controller
                     $user->save(false);
                     return $this->redirect('/users');
                 }
+                else $errors = $user->errors;
             }
         }
         return $this->render('update', [
@@ -117,6 +120,7 @@ class UserController extends Controller
     public function actionPassword($id)
     {
         $user = User::findIdentity($id);
+        $user->scenario = User::SCENARIO_PASSWORD;
         if (isset($user)) {
             $post = Yii::$app->request->post();
             if ($user->load(Yii::$app->request->post()))
@@ -124,7 +128,7 @@ class UserController extends Controller
                 if ($user->validate()) {
                     $user->hashPassword($user->password);
                     $user->save(false);
-                    return $this->redirect('/users');
+                    return $this->redirect('/user/view?id='.$user->getId());
                 }
             }
         return $this->render('password', [
