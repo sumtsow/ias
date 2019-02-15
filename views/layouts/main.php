@@ -23,7 +23,7 @@ $this->beginPage()
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-    <script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
+    
 </head>
 <body>
 <?php $this->beginBody() ?>
@@ -34,11 +34,11 @@ $this->beginPage()
         'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar navbar-inverse navbar-fixed-top ',
+            'class' => 'nav ',
         ],
     ]);
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
+        'options' => ['class' => 'nav'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],

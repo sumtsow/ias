@@ -99,14 +99,12 @@ class UserController extends Controller
         $user = User::findIdentity($id);
         $user->scenario = User::SCENARIO_UPDATE;
         if (isset($user)) {
-            $post = Yii::$app->request->post();
             if ($user->load(Yii::$app->request->post()))
             {
                 if ($user->validate()) {
                     $user->save(false);
                     return $this->redirect('/users');
                 }
-                else $errors = $user->errors;
             }
         }
         return $this->render('update', [

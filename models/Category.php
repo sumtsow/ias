@@ -29,7 +29,7 @@ class Category extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'created_at'], 'required'],
+            [['name'], 'required'],
             [['created_at'], 'safe'],
             [['name'], 'string', 'max' => 512],
         ];
@@ -53,5 +53,27 @@ class Category extends \yii\db\ActiveRecord
     public function getImagehascategories()
     {
         return $this->hasMany(Imagehascategory::className(), ['category_id' => 'id']);
+    }
+        
+    /**
+     * 
+     */    
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->created_at = date("Y-m-d H:i:s");;
+            }
+            return true;
+        }
+        return false;
+    }
+        
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }
