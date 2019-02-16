@@ -15,8 +15,8 @@ $this->params['breadcrumbs'][] = ['label' => 'Users'];
 ?>
 <h1><?= Html::encode($this->title) ?></h1> 
 <div class="table-responsive">
-<table class="table table-striped">
-    <thead class="thead text-center">
+<table class="table table-striped table-sm">
+    <thead class="thead thead-dark text-center">
         <tr>
             <th colspan="3" scope="col">action</th>       
             <th scope="col">id</th>
