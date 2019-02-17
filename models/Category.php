@@ -50,9 +50,19 @@ class Category extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getImagehascategories()
+    public function getImages()
     {
-        return $this->hasMany(Imagehascategory::className(), ['category_id' => 'id']);
+        return $this->hasMany(Image::className(), ['id' => 'image_id'])
+            ->viaTable('imagehascategory ', ['category_id' => 'id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getImagesCount()
+    {
+        return $this->hasMany(Image::className(), ['id' => 'image_id'])
+            ->viaTable('imagehascategory', ['category_id' => 'id'])->count();
     }
         
     /**

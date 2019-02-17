@@ -30,13 +30,16 @@ class CategoryController extends \yii\web\Controller
                     [
                         'allow' => true,
                         'actions' => ['index'],
-                        'roles' => ['?'],
+                        'roles' => ['?','@'],
                     ],                    
                 ],
             ],
         ];
     }
     
+    /**
+     * {@inheritdoc}
+     */
     public function actionIndex()
     {
         $models = Category::find()->orderBy('id')->all();

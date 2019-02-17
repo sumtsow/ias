@@ -2,6 +2,7 @@
 /* @var $this yii\web\View */
 use yii\helpers\Html;
 use yii\helpers\Url;
+use app\models\Category;
 
 $this->registerCssFile('https://use.fontawesome.com/releases/v5.5.0/css/all.css', [
     'integrity' => 'sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU',
@@ -9,7 +10,9 @@ $this->registerCssFile('https://use.fontawesome.com/releases/v5.5.0/css/all.css'
     'rel' => 'stylesheet',
     ]);
 $this->title = 'Image Categories';
-$this->params['breadcrumbs'][] = ['label' => 'Dashboard', 'url' => ['/dashboard']];
+if(Yii::$app->user->can('admin')) {
+    $this->params['breadcrumbs'][] = ['label' => 'Dashboard', 'url' => ['/dashboard']];
+}
 $this->params['breadcrumbs'][] = ['label' => 'Categories'];
 
 ?>
@@ -17,10 +20,20 @@ $this->params['breadcrumbs'][] = ['label' => 'Categories'];
 <div class="card-columns mb-3">
 <?php foreach($models as $category) : ?>
     <div class="card">
-        <div class="card-body"><a href="<?= Url::to(['/category/view', 'id' => $category->getId()] ); ?>"><?= $category->name; ?></a></div>
+        <?php if(Yii::$app->user->can('admin')) : ?>
+        <div class="card-header text-right">
+            <a href="<?= Url::to(['/category/view', 'id' => $category->getId()] ); ?>" class="badge" title="View"><span class="fa fa-eye"></span></a>
+            <a href="<?= Url::to(['/category/update', 'id' => $category->getId()] ); ?>" class="badge" title="Update"><span class="fa fa-edit"></span></a>
+            <a href="<?= Url::to(['/category/delete', 'id' => $category->getId()] ); ?>" class="badge" title="Delete"><span class="fa fa-trash"></span></a>
+        </div>
+        <?php endif; ?>
+        <div class="card-body"><a href="<?= Url::to(['/image/'.$category->getId()] ); ?>"><?= $category->name; ?></a></div>
+        <div class="card-footer text-right"><span class="badge badge-primary"><?= $category->getImagesCount(); ?> images</span></div>
     </div>
 <?php endforeach ?>
 </div>
+<?php if(Yii::$app->user->can('admin')) : ?>
 <div class="row mt-3">
     <div class="col-md-6"><a href="<?= Url::to('/category/create'); ?>" class="btn btn-primary">Create Category</a></div>
 </div>
+<?php endif; ?>
