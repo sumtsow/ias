@@ -62,6 +62,14 @@ class Image extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
         ];
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * @return \yii\db\ActiveQuery

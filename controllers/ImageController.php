@@ -57,12 +57,31 @@ class ImageController extends Controller
     public function actionView($id)
     {
         $model = Image::findOne($id);
-        $file = file_put_contents ('img/'.$model->filename, $model->content);
         return $this->render('view', [
             'model' => $model,
         ]);
     }
-
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function actionUpdate($id)
+    {
+        $model = Image::findOne($id);
+        if (isset($model)) {
+            if ($model->load(Yii::$app->request->post()))
+            {
+                if ($model->validate()) {
+                    $model->save(false);
+                    return $this->redirect(['/image/', 'id' => $id]);
+                }
+            }
+        }
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+    
     public function actionUpload()
     {
         $model = new UploadForm();
@@ -77,12 +96,26 @@ class ImageController extends Controller
                 $image->source = 'local';
                 $image->size = $model->imageFile->size;
                 $image->content = $model->content;
-                $image->hash = Yii::$app->getSecurity()->hashData($image->content, '');
+                $image->hash = crypt($image->content, null);
                 $image->created_at = date("Y-m-d H:i:s");
                 $image->save(false);
                 return $this->redirect(['/image/view', 'id' => $image->id]);
             }
         }
         return $this->render('/', ['model' => $model]);
+    }
+        
+    /**
+     * {@inheritdoc}
+     */        
+    public function actionDelete($id)
+    {
+        $model = Image::findOne($id);
+        if ($model)
+        {
+            $model->delete();
+            return $this->redirect('/image'); 
+        }
+        return $this->goBack();       
     }
 }

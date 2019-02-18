@@ -1,32 +1,55 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use app\models\Image;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Image */
 /* @var $form ActiveForm */
 $this->title = 'Images';
 $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['/category']];
+
+$this->registerCssFile('https://use.fontawesome.com/releases/v5.5.0/css/all.css', [
+    'integrity' => 'sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU',
+    'crossorigin' => 'anonymous',
+    'rel' => 'stylesheet',
+    ]);
 ?>
-<h1><?= Html::encode($this->title) ?></h1> 
+
+<h1>
+<?= Html::encode($this->title) ?>
+<?php if(Yii::$app->user->can('admin')) : ?>
+<a class="btn btn-light border-info mx-3" href="<?= Url::to('/image/create'); ?>">Create Image</a>
+<?php endif; ?>    
+</h1> 
+
 <div class="card-columns mb-3">
 <?php foreach($models as $image) : ?>
-    <div class="card">
+    <div class="card border-info">
         <?php if(Yii::$app->user->can('admin')) : ?>
-        <div class="card-header text-right">
-            <a href="<?= Url::to(['/image/view', 'id' => $image->getId()] ); ?>" class="badge" title="View"><span class="fa fa-eye"></span></a>
-            <a href="<?= Url::to(['/image/update', 'id' => $image->getId()] ); ?>" class="badge" title="Update"><span class="fa fa-edit"></span></a>
-            <a href="<?= Url::to(['/image/delete', 'id' => $image->getId()] ); ?>" class="badge" title="Delete"><span class="fa fa-trash"></span></a>
+        <div class="card-header bg-info">
+            <div class="row justify-content-between">
+            <div class="col-auto mr-auto text-light"><?= $image->filename ?></div>
+            <div class="col-auto">
+            <a class="badge badge-pill bg-light text-dark" href="<?= Url::to(['/image/view', 'id' => $image->getId()] ); ?>" title="View"><span class="fa fa-eye"></span></a>
+            <a class="badge badge-pill bg-light text-dark" href="<?= Url::to(['/image/update', 'id' => $image->getId()] ); ?>" title="Update"><span class="fa fa-edit"></span></a>
+            <a class="badge badge-pill bg-light text-dark" href="<?= Url::to(['/image/delete', 'id' => $image->getId()] ); ?>" title="Delete"><span class="fa fa-trash"></span></a>
+            </div>
+            </div>
         </div>
-        <?php endif; ?>
-        <div class="card-body"><a href="<?= Url::to(['/image/'.$image->getId()] ); ?>"><?= $image->filename; ?></a></div>
-        <div class="card-footer text-right"><span class="badge badge-primary"><?= $image->size; ?> bytes</span></div>
+        <?php
+            endif;
+            file_put_contents ('img/'.$image->filename, $image->content);        
+        ?>
+        <div class="card-body">
+            <a href="<?= Url::to(['/image/'.$image->getId()] ); ?>">
+            <img class="d-flex w-100" src="/img/<?= $image->filename; ?>" alt="<?= $image->filename; ?>" />
+            </a>
+        </div>
+        
+        <div class="card-footer text-right bg-info"><span class="badge badge-light"><?= $image->size; ?> bytes</span></div>
     </div>
 <?php endforeach ?>
 </div>
-<?php if(Yii::$app->user->can('admin')) : ?>
-<div class="row mt-3">
-    <div class="col-md-6"><a href="<?= Url::to('/image/create'); ?>" class="btn btn-primary">Create Image</a></div>
-</div>
-<?php endif; ?>

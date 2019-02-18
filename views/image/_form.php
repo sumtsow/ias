@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Image */
@@ -12,17 +12,17 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'user_id')->textInput() ?>
+    <?= $form->field($model, 'id')->textInput(['disabled' => 'disabled']) ?>
+    
+    <?= $form->field($model, 'user_id')->textInput(['disabled' => 'disabled']) ?>
 
     <?= $form->field($model, 'filename')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'source')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'size')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'size')->textInput(['disabled' => 'disabled']) ?>
 
-    <?= $form->field($model, 'content')->textInput() ?>
-
-    <?= $form->field($model, 'hash')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'hash')->textInput(['disabled' => 'disabled']) ?>
 
     <?= $form->field($model, 'created_at')->textInput() ?>
 
