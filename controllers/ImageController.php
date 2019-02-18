@@ -4,7 +4,9 @@ namespace app\controllers;
 
 use Yii;
 use yii\web\Controller;
+use yii\web\UploadedFile;
 use app\models\Image;
+use app\models\UploadForm;
 use yii\filters\AccessControl;
 
 class ImageController extends Controller
@@ -48,6 +50,18 @@ class ImageController extends Controller
             'models' => $models,
         ]);
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function actionView($id)
+    {
+        $model = Image::findOne($id);
+        $file = file_put_contents ('img/'.$model->filename, $model->content);
+        return $this->render('view', [
+            'model' => $model,
+        ]);
+    }
 
     public function actionUpload()
     {
@@ -57,9 +71,18 @@ class ImageController extends Controller
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
             if ($model->upload()) {
                 // file is uploaded successfully
-                return;
+                $image = new Image();
+                $image->user_id = Yii::$app->user->getId();
+                $image->filename = $model->imageFile->name;
+                $image->source = 'local';
+                $image->size = $model->imageFile->size;
+                $image->content = $model->content;
+                $image->hash = Yii::$app->getSecurity()->hashData($image->content, '');
+                $image->created_at = date("Y-m-d H:i:s");
+                $image->save(false);
+                return $this->redirect(['/image/view', 'id' => $image->id]);
             }
         }
-        return $this->render('upload', ['model' => $model]);
+        return $this->render('/', ['model' => $model]);
     }
 }

@@ -214,7 +214,7 @@ class User extends ActiveRecord implements IdentityInterface
             if ($this->isNewRecord) {
                 $this->generateAuthKey();
                 $this->generateAccessToken();
-                $this->created_at = date("Y-m-d H:i:s");;
+                $this->created_at = date("Y-m-d H:i:s");
             }
             return true;
         }

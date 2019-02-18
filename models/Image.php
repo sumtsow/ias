@@ -21,6 +21,7 @@ use Yii;
  */
 class Image extends \yii\db\ActiveRecord
 {
+    
     /**
      * {@inheritdoc}
      */

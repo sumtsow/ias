@@ -1,6 +1,6 @@
 <?php
 
-use yii\widgets\ActiveForm;
+use app\models\UploadForm;
 
 $this->title = 'Пошук зображень';
 ?>
@@ -11,11 +11,10 @@ $this->title = 'Пошук зображень';
         </div>
         <div class="card-body">
             <p class="card-title"><a href="/category">Image Categories</a></p>
-            <p class="card-title">Upload Image</p>
-            <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
-            <?= $form->field($model, 'imageFile')->fileInput() ?>
-            <button>Submit</button>
-            <?php ActiveForm::end() ?>
+            <h5 class="card-title">Upload Image</h5>
+            <?= $this->render('/image/_uploadform', [
+                'model' => new UploadForm(),
+            ]) ?>
         </div>        
     </div>
 </div>
