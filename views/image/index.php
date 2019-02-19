@@ -10,6 +10,7 @@ use app\models\Image;
 /* @var $form ActiveForm */
 $this->title = 'Images';
 $this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['/category']];
+$this->params['breadcrumbs'][] = ['label' => 'Images'];
 
 $this->registerCssFile('https://use.fontawesome.com/releases/v5.5.0/css/all.css', [
     'integrity' => 'sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU',
