@@ -19,16 +19,16 @@ $this->params['breadcrumbs'][] = ['label' => 'Categories'];
 <h1><?= Html::encode($this->title) ?></h1> 
 <div class="card-columns mb-3">
 <?php foreach($models as $category) : ?>
-    <div class="card">
+    <div class="card border-info">
         <?php if(Yii::$app->user->can('admin')) : ?>
         <div class="card-header text-right">
-            <a href="<?= Url::to(['/category/view', 'id' => $category->getId()] ); ?>" class="badge" title="View"><span class="fa fa-eye"></span></a>
-            <a href="<?= Url::to(['/category/update', 'id' => $category->getId()] ); ?>" class="badge" title="Update"><span class="fa fa-edit"></span></a>
-            <a href="<?= Url::to(['/category/delete', 'id' => $category->getId()] ); ?>" class="badge" title="Delete"><span class="fa fa-trash"></span></a>
+            <a href="<?= Url::to(['/category/view', 'id' => $category->getId()] ); ?>" class="badge badge-info" title="View"><span class="fa fa-eye"></span></a>
+            <a href="<?= Url::to(['/category/update', 'id' => $category->getId()] ); ?>" class="badge badge-info" title="Update"><span class="fa fa-edit"></span></a>
+            <a href="<?= Url::to(['/category/delete', 'id' => $category->getId()] ); ?>" class="badge badge-info" title="Delete"><span class="fa fa-trash"></span></a>
         </div>
         <?php endif; ?>
-        <div class="card-body"><a href="<?= Url::to(['/image/'.$category->getId()] ); ?>"><?= $category->name; ?></a></div>
-        <div class="card-footer text-right"><span class="badge badge-primary"><?= $category->getImagesCount(); ?> images</span></div>
+        <div class="card-body"><a class="card-title" href="<?= Url::to(['/image/'.$category->getId()] ); ?>"><?= $category->name; ?></a></div>
+        <div class="card-footer"><span class="badge badge-info"><?= $category->getImagesCount(); ?> images</span></div>
     </div>
 <?php endforeach ?>
 </div>

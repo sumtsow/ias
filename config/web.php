@@ -91,6 +91,7 @@ $config = [
     ],
     'params' => $params,
     'name' => 'NURE IRS',
+    'language' => 'ru_RU',
 ];
 
 if (YII_ENV_DEV) {

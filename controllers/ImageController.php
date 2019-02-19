@@ -99,7 +99,7 @@ class ImageController extends Controller
                 $image->hash = crypt($image->content, null);
                 $image->created_at = date("Y-m-d H:i:s");
                 $image->save(false);
-                return $this->redirect(['/image/view', 'id' => $image->id]);
+                return $this->redirect('/image');
             }
         }
         return $this->render('/', ['model' => $model]);
