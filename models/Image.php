@@ -86,29 +86,40 @@ class Image extends \yii\db\ActiveRecord
      */
     public function getCategories()
     {
-        return $this->hasMany(Category::className(), ['id' => 'category_id'])
+        return $this->hasMany(Category::className(), ['id' => 'category_id'])->orderBy('name')
             ->viaTable('imagehascategory', ['image_id' => 'id']);
+    }
+    
+    /**
+     * @return boolean result
+     */
+    public function inCategory($id)
+    {
+        return in_array($id, ArrayHelper::getColumn($this->categories, 'id'));
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\Command
      */
     public function addCategory($id)
     {
-        $arr = ArrayHelper::getColumn($this->categories, 'id');
-        $exists = in_array($id, $arr);
-        /*foreach($categories as $category) {
-            if ($category->id == $id) {
-                $exists = true;
-            }
-        }*/
-        //$image_id = $this->id;
-        if(!$exists) {
+        if(!$this->inCategory($id)) {
             Yii::$app->db->createCommand()->insert('imagehascategory', [
                 'category_id' => $id,
                 'image_id' => $this->id,
             ])->execute();
         }
-        return !$exists;
+        return true;
+    }
+    
+    /**
+     * @return \yii\db\Command
+     */
+    public function removeCategory($id)
+    {
+        if($this->inCategory($id)) {
+            Yii::$app->db->createCommand()->delete('imagehascategory', 'category_id = '.$id)->execute();
+        }
+        return true;
     }
 }

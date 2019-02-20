@@ -1,6 +1,8 @@
 <?php
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\widgets\LinkSorter;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -22,6 +24,9 @@ echo Html::a('Delete', ['delete', 'id' => $model->id], [
     ],
 ]);
 endif; ?>
+    <span class="ml-3"><span class="font-weight-bold">Categories:</span>
+    <?= implode(' | ', ArrayHelper::getColumn($model->categories, 'name')); ?>
+    </span>    
 </p>
 <div class="card border-info">
     <div class="card-header bg-info text-light">HASH: <?= Html::encode($model->hash) ?></div>

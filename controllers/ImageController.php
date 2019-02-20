@@ -86,6 +86,10 @@ class ImageController extends Controller
             if ($model->load(Yii::$app->request->post()))
             {
                 if ($model->validate()) {
+                    $category_id = Yii::$app->request->post('Image')['categories'];
+                    if ($category_id) {
+                        $model->addCategory($category_id);
+                    }
                     $model->save(false);
                     return $this->redirect(['/image/', 'id' => $id]);
                 }
@@ -132,5 +136,18 @@ class ImageController extends Controller
             return $this->redirect('/image'); 
         }
         return $this->goBack();       
+    }
+     
+    /**
+     * {@inheritdoc}
+     */        
+    public function actionRmcat($category_id, $id)
+    {
+        $image = Image::findOne($id);
+        if ($image)
+        {
+            $image->removeCategory($category_id);
+        }
+        return $this->redirect('/image/update?id='.$id);       
     }
 }
