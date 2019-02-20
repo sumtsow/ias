@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
 <div class="image-upload-form">
 
 <?php $form = ActiveForm::begin([
-    'action' => 'image/upload',    
+    'action' => '/image/upload',    
     'options' => ['enctype' => 'multipart/form-data',],
     ]) ?>
 

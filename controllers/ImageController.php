@@ -6,6 +6,7 @@ use Yii;
 use yii\web\Controller;
 use yii\web\UploadedFile;
 use app\models\Image;
+use app\models\Category;
 use app\models\UploadForm;
 use yii\filters\AccessControl;
 
@@ -31,7 +32,7 @@ class ImageController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index'],
+                        'actions' => ['index', 'view'],
                         'roles' => ['?','@'],
                     ],                    
                 ],
@@ -42,12 +43,25 @@ class ImageController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function actionIndex()
+    public function actionIndex($category_id = null)
     {
-        
-        $models = Image::find()->orderBy('id')->all();
+        $models = array();
+        if($category_id) {
+            $category = Category::findOne($category_id);
+            if($category) {
+                foreach($category->images as $image) {
+                    $models[] = Image::findOne($image->id);
+                }
+            }
+            
+        }
+        else {
+            $models = Image::find()->orderBy('id')->all();
+            $category = null;
+        }
         return $this->render('index', [
             'models' => $models,
+            'category' => $category,
         ]);
     }
     
@@ -97,8 +111,9 @@ class ImageController extends Controller
                 $image->size = $model->imageFile->size;
                 $image->content = $model->content;
                 $image->hash = crypt($image->content, null);
-                $image->created_at = date("Y-m-d H:i:s");
+                $image->created_at = date('Y-m-d H:i:s');
                 $image->save(false);
+                $image->addCategory(1);
                 return $this->redirect('/image');
             }
         }

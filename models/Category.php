@@ -53,7 +53,7 @@ class Category extends \yii\db\ActiveRecord
     public function getImages()
     {
         return $this->hasMany(Image::className(), ['id' => 'image_id'])
-            ->viaTable('imagehascategory ', ['category_id' => 'id']);
+            ->viaTable('imagehascategory', ['category_id' => 'id']);
     }
     
     /**

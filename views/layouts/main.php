@@ -29,9 +29,9 @@ $this->beginPage()
 
 <div class="wrap">
     <div class="container-fluid bg-info">
-        <ul class="nav bg-transparent">
+        <ul class="nav bg-transparent" id="navbar">
             <li class="nav-item">
-                <a class="nav-link text-light active" href="/site/index">Home</a>
+                <a class="nav-link text-light" href="/site/index">Home</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-light" href="/image">Images</a>
@@ -64,6 +64,8 @@ $this->beginPage()
             <li class="nav-item">
                 <a class="nav-link text-light" href="/dashboard">Dashboard</a>
             </li>
+            <?php endif; ?>
+            <?php if(Yii::$app->user->can('admin')) : ?>
             <li class="nav-item">
                 <a class="nav-link text-light" href="/gii">Gii</a>
             </li>

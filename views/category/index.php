@@ -27,7 +27,15 @@ $this->params['breadcrumbs'][] = ['label' => 'Categories'];
             <a href="<?= Url::to(['/category/delete', 'id' => $category->getId()] ); ?>" class="badge badge-info" title="Delete"><span class="fa fa-trash"></span></a>
         </div>
         <?php endif; ?>
-        <div class="card-body"><a class="card-title" href="<?= Url::to(['/image/'.$category->getId()] ); ?>"><?= $category->name; ?></a></div>
+        <div class="card-body">
+            <?php if($category->getImagesCount()) : ?>
+            <a class="card-title" href="<?= Url::to(['/image', 'category_id' => $category->getId()] ); ?>">
+            <?php endif; ?>    
+            <?= $category->name; ?>
+            <?php if($category->getImagesCount()) : ?>
+            </a>
+            <?php endif; ?>
+        </div>
         <div class="card-footer"><span class="badge badge-info"><?= $category->getImagesCount(); ?> images</span></div>
     </div>
 <?php endforeach ?>

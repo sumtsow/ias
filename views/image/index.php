@@ -18,7 +18,6 @@ $this->registerCssFile('https://use.fontawesome.com/releases/v5.5.0/css/all.css'
     'rel' => 'stylesheet',
     ]);
 ?>
-
 <h1>
 <?= Html::encode($this->title) ?>
 <?php if(Yii::$app->user->can('admin')) : ?>

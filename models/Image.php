@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use app\models\Category;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "image".
@@ -36,7 +38,7 @@ class Image extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'filename', 'source', 'size', 'content', 'hash', 'created_at'], 'required'],
+            [['id', 'user_id', 'filename', 'source', 'size', 'content', 'hash', 'created_at'], 'required'],
             [['user_id', 'size'], 'integer'],
             [['content'], 'string'],
             [['created_at'], 'safe'],
@@ -82,8 +84,31 @@ class Image extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getImagehascategories()
+    public function getCategories()
     {
-        return $this->hasMany(Imagehascategory::className(), ['image_id' => 'id']);
+        return $this->hasMany(Category::className(), ['id' => 'category_id'])
+            ->viaTable('imagehascategory', ['image_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function addCategory($id)
+    {
+        $arr = ArrayHelper::getColumn($this->categories, 'id');
+        $exists = in_array($id, $arr);
+        /*foreach($categories as $category) {
+            if ($category->id == $id) {
+                $exists = true;
+            }
+        }*/
+        //$image_id = $this->id;
+        if(!$exists) {
+            Yii::$app->db->createCommand()->insert('imagehascategory', [
+                'category_id' => $id,
+                'image_id' => $this->id,
+            ])->execute();
+        }
+        return !$exists;
     }
 }

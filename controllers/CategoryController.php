@@ -21,7 +21,7 @@ class CategoryController extends \yii\web\Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view', 'create', 'update', 'delete'],
+                        'actions' => ['create', 'update', 'delete'],
                         'roles' => ['admin'],
                         'roleParams' => function($rule) {
                             return ['category' => Category::findOne(Yii::$app->request->get('id'))];
@@ -29,7 +29,7 @@ class CategoryController extends \yii\web\Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index'],
+                        'actions' => ['index', 'view'],
                         'roles' => ['?','@'],
                     ],                    
                 ],

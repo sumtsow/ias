@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Image */
 
 $this->title = $model->filename;
-$this->params['breadcrumbs'][] = ['label' => 'Images', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Images', 'url' => ['/image']];
 $this->params['breadcrumbs'][] = $this->title;
 file_put_contents ('img/'.$model->filename, $model->content);
 ?>
