@@ -2,6 +2,7 @@
 
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use app\models\Image;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Image */
@@ -9,7 +10,8 @@ use yii\helpers\Html;
 $this->title = 'View file';
 $this->params['breadcrumbs'][] = ['label' => 'Images', 'url' => ['/image']];
 $this->params['breadcrumbs'][] = $this->title;
-file_put_contents ('img/'.$model->filename, $model->content);
+Image::clearDir();
+$model->toFile();
 ?>
 <h1><?= Html::encode($this->title) ?></h1>
 <h2><?= Html::encode($message) ?></h2>

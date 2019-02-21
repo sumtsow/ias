@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\i18n\Formatter;
+use app\models\Image;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Image */
@@ -17,6 +18,7 @@ $this->registerCssFile('https://use.fontawesome.com/releases/v5.5.0/css/all.css'
     'crossorigin' => 'anonymous',
     'rel' => 'stylesheet',
     ]);
+Image::clearDir();
 ?>
 <h1>
 <?= Html::encode($this->title) ?>
@@ -38,7 +40,7 @@ $this->registerCssFile('https://use.fontawesome.com/releases/v5.5.0/css/all.css'
                 <a class="badge badge-info" href="<?= Url::to(['/image/delete', 'id' => $image->getId()] ); ?>" title="Delete"><span class="fa fa-trash"></span></a>
                     <?php
                     endif;
-                    file_put_contents ('img/'.$image->filename, $image->content);        
+                    $image->toFile();        
                     ?>                
                 </div>
             </div>

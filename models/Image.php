@@ -105,6 +105,26 @@ class Image extends \yii\db\ActiveRecord
     {
         return md5($str);
     }
+
+    /**
+     * @return int bytes or false
+     */
+    public function toFile()
+    {
+        return file_put_contents('img/'.$this->filename, $this->content);
+    }
+        
+    /**
+     * @return boolean
+     */
+    public static function clearDir()
+    {
+        $files = glob('img/*'); //get all file names
+        foreach($files as $file){
+            if(is_file($file)) unlink($file); //delete file
+        }
+        return true;
+    }
     
     /**
      * {@inheritdoc}
