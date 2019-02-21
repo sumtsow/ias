@@ -15,7 +15,7 @@ use yii\helpers\Html;
         array_push($params['items'], ['label' => 'Images', 'url' => Url::to(['/image']), 'class' => 'nav-item']);
     }
     else {
-        array_push($params['items'], ['label' => 'My Images', 'url' => Url::to(['/image']), 'class' => 'nav-item']);
+        array_push($params['items'], ['label' => 'My Images', 'url' => Url::to(['/image/own', 'user_id' => Yii::$app->user->getID() ]), 'class' => 'nav-item']);
     }
 ?>
 <h1><?= Html::encode($this->title) ?></h1> 

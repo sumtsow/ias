@@ -36,7 +36,7 @@ $config = [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'smtp.meta.ua',  // e.g. smtp.mandrillapp.com or smtp.gmail.com
                 'username' => 'sumtsow@meta.ua',
-                'password' => 'jbV88$mc2578',
+                'password' => 'H7h2vj3qq4',
                 'port' => '465', // Port 25 is a very common port too
                 'encryption' => 'ssl', // It is often used, check your provider or mail server specs
             ],            
@@ -91,7 +91,7 @@ $config = [
     ],
     'params' => $params,
     'name' => 'NURE IRS',
-    'language' => 'ru_RU',
+    'language' => 'ru-RU',
 ];
 
 if (YII_ENV_DEV) {

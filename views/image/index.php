@@ -20,8 +20,8 @@ $this->registerCssFile('https://use.fontawesome.com/releases/v5.5.0/css/all.css'
 ?>
 <h1>
 <?= Html::encode($this->title) ?>
-<?php if(Yii::$app->user->can('admin')) : ?>
-<a class="btn btn-light border-info mx-3" href="<?= Url::to('/image/create'); ?>">Create Image</a>
+<?php if(Yii::$app->user->can('createImage')) : ?>
+<a class="btn btn-light border-info mx-3" href="<?= Url::to('/'); ?>">Create Image</a>
 <?php endif; ?>    
 </h1> 
 
@@ -32,7 +32,7 @@ $this->registerCssFile('https://use.fontawesome.com/releases/v5.5.0/css/all.css'
             <div class="row justify-content-between">
                 <div class="col-auto mr-auto"><?= $image->filename ?></div>
                 <div class="col-auto">
-                    <?php if(Yii::$app->user->can('admin')) : ?>
+                    <?php if(Yii::$app->user->can('updateImage', ['image' => $image])) : ?>
                 <a class="badge badge-info" href="<?= Url::to(['/image/view', 'id' => $image->getId()] ); ?>" title="View"><span class="fa fa-eye"></span></a>
                 <a class="badge badge-info" href="<?= Url::to(['/image/update', 'id' => $image->getId()] ); ?>" title="Update"><span class="fa fa-edit"></span></a>
                 <a class="badge badge-info" href="<?= Url::to(['/image/delete', 'id' => $image->getId()] ); ?>" title="Delete"><span class="fa fa-trash"></span></a>

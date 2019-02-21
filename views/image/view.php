@@ -2,8 +2,6 @@
 
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\widgets\LinkSorter;
-use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Image */
@@ -29,6 +27,15 @@ endif; ?>
     </span>    
 </p>
 <div class="card border-info">
-    <div class="card-header bg-info text-light">HASH: <?= Html::encode($model->hash) ?></div>
+    <div class="card-header bg-info text-light h5">
+        <?= Html::encode($model->filename) ?>
+    </div>
     <div class="card-body"><img src="/img/<?= $model->filename; ?>" alt="<?= $model->filename; ?>" /></div>
+    <div class="card-header bg-info text-light">
+        Source: <?= Html::encode($model->source) ?><br />
+        Size: <?= Html::encode($model->size) ?> bytes<br />
+        Owner: <?= Html::encode($owner) ?><br />        
+        MD-5 hash: <?= Html::encode($model->hash) ?><br />
+        Uploaded: <?= Yii::$app->formatter->asDatetime($model->created_at, 'long');?>       
+    </div>    
 </div>

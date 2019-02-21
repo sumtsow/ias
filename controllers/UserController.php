@@ -23,14 +23,14 @@ class UserController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['update', 'view', 'password'],
-                        'roles' => ['updateOwnProfile', 'admin'],
+                        'roles' => ['updateOwnProfile'],
                         'roleParams' => function($rule) {
                             return ['user' => User::findOne(Yii::$app->request->get('id'))];
                         },
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'create', 'switch', 'role', 'delete'],
+                        'actions' => ['index', 'view', 'create', 'update', 'password', 'switch', 'role', 'delete'],
                         'roles' => ['admin'],
                         'roleParams' => function($rule) {
                             return ['user' => User::findOne(Yii::$app->request->get('id'))];
@@ -103,7 +103,7 @@ class UserController extends Controller
             {
                 if ($user->validate()) {
                     $user->save(false);
-                    return $this->redirect('/users');
+                    return $this->redirect('/dashboard');
                 }
             }
         }

@@ -7,6 +7,7 @@ use yii\web\Controller;
 use yii\web\UploadedFile;
 use app\models\Image;
 use app\models\Category;
+use app\models\User;
 use app\models\UploadForm;
 use yii\filters\AccessControl;
 
@@ -17,24 +18,26 @@ class ImageController extends Controller
      */
     public function behaviors()
     {
+        $image = Image::findOne(['user_id' => Yii::$app->request->get('user_id')]);
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index', 'view', 'create', 'update', 'delete'],
+                'only' => ['own', 'update', 'delete'],
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view', 'create', 'update', 'delete'],
+                        'actions' => ['own', 'update', 'delete'],
                         'roles' => ['admin'],
-                        'roleParams' => function($rule) {
-                            return ['category' => Image::findOne(Yii::$app->request->get('id'))];
-                        },
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view'],
-                        'roles' => ['?','@'],
-                    ],                    
+                        'actions' => ['own', 'update', 'delete'],
+                        'roles' => ['updateImage'],
+                        'roleParams' => function($rule) {
+                            $id = (Yii::$app->request->get('user_id')) ? Yii::$app->request->get('user_id') : Yii::$app->request->get('id');
+                            return ['image' => Image::findOne($id)];
+                        },
+                    ],                                
                 ],
             ],
         ];
@@ -68,11 +71,27 @@ class ImageController extends Controller
     /**
      * {@inheritdoc}
      */
+    public function actionOwn($user_id = null)
+    {
+        if($user_id) {
+            return $this->render('index', [
+            'models' => Image::findAll(['user_id' => $user_id]),
+        ]);
+        }
+        return $this->redirect('/image');
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
     public function actionView($id)
     {
         $model = Image::findOne($id);
+        $user = User::findOne($model->user_id);
+        $owner = $user->lastname.' '.$user->firstname;
         return $this->render('view', [
             'model' => $model,
+            'owner' => $owner,
         ]);
     }
     
@@ -91,7 +110,7 @@ class ImageController extends Controller
                         $model->addCategory($category_id);
                     }
                     $model->save(false);
-                    return $this->redirect(['/image/', 'id' => $id]);
+                    return $this->redirect(['/image/update', 'id' => $id]);
                 }
             }
         }
@@ -143,10 +162,12 @@ class ImageController extends Controller
      */        
     public function actionRmcat($category_id, $id)
     {
-        $image = Image::findOne($id);
-        if ($image)
-        {
-            $image->removeCategory($category_id);
+        if($category_id != 1) {
+            $image = Image::findOne($id);
+            if ($image)
+            {
+                $image->removeCategory($category_id);
+            }
         }
         return $this->redirect('/image/update?id='.$id);       
     }

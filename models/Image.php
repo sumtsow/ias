@@ -122,4 +122,20 @@ class Image extends \yii\db\ActiveRecord
         }
         return true;
     }
+    
+    /**
+     * 
+     */    
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                if(!$this->user_id) {
+                    $this->user_id = 2;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
 }

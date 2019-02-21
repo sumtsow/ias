@@ -15,6 +15,9 @@ class RbacController extends Controller
         // add the rule
         $rule = new \app\rbac\OwnerRule();
         $auth->add($rule);
+        
+        $rule2 = new \app\rbac\ImageOwnerRule();
+        $auth->add($rule2);        
 
         // добавляем разрешение "createImage"
         $createImage = $auth->createPermission('createImage');
@@ -24,6 +27,7 @@ class RbacController extends Controller
         // добавляем разрешение "updateImage"
         $updateImage = $auth->createPermission('updateImage');
         $updateImage->description = 'Update image';
+        $updateImage->ruleName = $rule2->name;        
         $auth->add($updateImage);
         
         // добавляем разрешение "updateOwnProfile" и привязываем к нему правило.
@@ -36,7 +40,8 @@ class RbacController extends Controller
         $user = $auth->createRole('user');
         $auth->add($user);
         $auth->addChild($user, $createImage);
-
+        $auth->addChild($user, $updateImage);
+        
         // разрешаем пользователю обновлять его профиль
         $auth->addChild($user, $updateOwnProfile);        
 
@@ -50,7 +55,7 @@ class RbacController extends Controller
         // Назначение ролей пользователям. 1 и 2 это IDs возвращаемые IdentityInterface::getId()
         // обычно реализуемый в модели User.
         $auth->assign($admin, 1);
-        $auth->assign($user, 2);
+        $auth->assign($user, 3);
         
     }
 }

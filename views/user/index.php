@@ -34,9 +34,12 @@ $this->params['breadcrumbs'][] = ['label' => 'Users'];
     <tbody>
         <?php foreach($users as $user): ?>
         <tr>
-            <td><a href="<?= Url::to(['/user/'.$user->id]); ?>" class="badge" title="View"><span class="fa fa-eye"></span></a></td>
-            <td><a href="<?= Url::to(['/user/update', 'id' => $user->id]); ?>" class="badge" title="Edit"><span class="fa fa-edit"></span></a></td>
-            <td><a href="<?= Url::to(['/user/delete', 'id' => $user->id]); ?>" class="badge" title="Delete"><span class="fa fa-trash-alt"></span></a></td>
+            <td><a href="<?= Url::to(['/user/'.$user->id]); ?>" class="badge badge-dark" title="View"><span class="fa fa-eye"></span></a></td>
+            <td><a href="<?= Url::to(['/user/update', 'id' => $user->id]); ?>" class="badge badge-dark" title="Edit"><span class="fa fa-edit"></span></a></td>
+            <td><?php if(Yii::$app->user->getId() != $user->id) : ?>
+            <a href="<?= Url::to(['/user/delete', 'id' => $user->id]); ?>" class="badge badge-dark" title="Delete"><span class="fa fa-trash-alt"></span></a>
+            <?php endif; ?></td>
+            
             <td><?= $user->id; ?></td>
             <td><?= $user->lastname; ?></td>
             <td><?= $user->firstname; ?></td>
@@ -51,8 +54,8 @@ $this->params['breadcrumbs'][] = ['label' => 'Users'];
             <?= $form->field($user, 'role')
                     ->checkbox([
                         'onChange' => 'this.form.submit();',
-                        'checked' => ($user->role === 'admin') ? 'checked' : null,                        
                         'label' => ($user->role === 'admin') ? 'admin' : 'user',
+                        'checked ' => ($user->role === 'admin') ? 'checked' : null,
                     ]); ?>
             <?php ActiveForm::end(); ?></td>
             <td><?= ($user->password) ? 'set' : 'empty' ?></td>
@@ -71,7 +74,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Users'];
             <?php ActiveForm::end(); ?></td>
             <td><?= ($user->auth_key) ? 'set' : 'empty' ?></td>
             <td><?= ($user->access_token) ? 'set' : 'empty' ?></td>
-            <td><?= $user->created_at; ?></td>
+            <td><?= Yii::$app->formatter->asDatetime($user->created_at, 'long'); ?></td>
         </tr>
         <?php endforeach; ?>
     </tbody>
