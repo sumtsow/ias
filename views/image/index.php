@@ -23,16 +23,16 @@ $this->registerCssFile('https://use.fontawesome.com/releases/v5.5.0/css/all.css'
 <?php if(Yii::$app->user->can('createImage')) : ?>
 <a class="btn btn-light border-info mx-3" href="<?= Url::to('/'); ?>">Create Image</a>
 <?php endif; ?>    
-</h1> 
+</h1>
 
 <div class="card-columns mb-3">
 <?php foreach($models as $image) : ?>
     <div class="card w-75 border-info">
-        <div class="card-header">
+        <div class="card-header p">
             <div class="row justify-content-between">
-                <div class="col-auto mr-auto"><?= $image->filename ?></div>
+                <div class="col-auto mr-auto"><small><?= $image->filename ?></small></div>
                 <div class="col-auto">
-                    <?php if(Yii::$app->user->can('updateImage', ['image' => $image])) : ?>
+                    <?php if(Yii::$app->user->can('updateImage', ['image' => $image]) || Yii::$app->user->can('admin')) : ?>
                 <a class="badge badge-info" href="<?= Url::to(['/image/view', 'id' => $image->getId()] ); ?>" title="View"><span class="fa fa-eye"></span></a>
                 <a class="badge badge-info" href="<?= Url::to(['/image/update', 'id' => $image->getId()] ); ?>" title="Update"><span class="fa fa-edit"></span></a>
                 <a class="badge badge-info" href="<?= Url::to(['/image/delete', 'id' => $image->getId()] ); ?>" title="Delete"><span class="fa fa-trash"></span></a>

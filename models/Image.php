@@ -97,6 +97,22 @@ class Image extends \yii\db\ActiveRecord
     {
         return in_array($id, ArrayHelper::getColumn($this->categories, 'id'));
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public static function toHash($str)
+    {
+        return md5($str);
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public static function searchMd5($hash)
+    {
+        return self::findOne(['hash' => $hash]);
+    }
 
     /**
      * @return \yii\db\Command

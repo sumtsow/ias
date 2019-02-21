@@ -6,11 +6,13 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Image */
 
-$this->title = $model->filename;
+$this->title = 'View file';
 $this->params['breadcrumbs'][] = ['label' => 'Images', 'url' => ['/image']];
 $this->params['breadcrumbs'][] = $this->title;
 file_put_contents ('img/'.$model->filename, $model->content);
 ?>
+<h1><?= Html::encode($this->title) ?></h1>
+<h2><?= Html::encode($message) ?></h2>
 <p>
 <?php if(Yii::$app->user->can('admin')) :    
 echo Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary mr-3']);

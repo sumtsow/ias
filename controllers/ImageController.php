@@ -18,7 +18,6 @@ class ImageController extends Controller
      */
     public function behaviors()
     {
-        $image = Image::findOne(['user_id' => Yii::$app->request->get('user_id')]);
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -88,10 +87,12 @@ class ImageController extends Controller
     {
         $model = Image::findOne($id);
         $user = User::findOne($model->user_id);
+        $message = Yii::$app->request->get('message');
         $owner = $user->lastname.' '.$user->firstname;
         return $this->render('view', [
             'model' => $model,
             'owner' => $owner,
+            'message' => $message,
         ]);
     }
     
@@ -128,16 +129,22 @@ class ImageController extends Controller
             if ($model->upload()) {
                 // file is uploaded successfully
                 $image = new Image();
+                $image->hash = Image::toHash($model->content);                
                 $image->user_id = Yii::$app->user->getId();
                 $image->filename = $model->imageFile->name;
                 $image->source = 'local';
                 $image->size = $model->imageFile->size;
                 $image->content = $model->content;
-                $image->hash = crypt($image->content, null);
                 $image->created_at = date('Y-m-d H:i:s');
-                $image->save(false);
-                $image->addCategory(1);
-                return $this->redirect('/image');
+                $result = Image::searchMd5($image->hash);
+                if($result) {
+                    return $this->redirect(['/image/'.$result->id, 'message' => 'Image aready exist in database!']);
+                }
+                else {
+                    $image->save(false);
+                    $image->addCategory(1);
+                    return $this->redirect('/image');
+                }
             }
         }
         return $this->render('/', ['model' => $model]);

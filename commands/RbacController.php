@@ -1,8 +1,10 @@
 <?php
-namespace app\controllers;
+//namespace app\controllers;
+namespace app\commands;
 
 use Yii;
-use yii\web\Controller;
+//use yii\web\Controller;
+use yii\console\Controller;
 use yii\rbac\Rule;
 
 class RbacController extends Controller
@@ -52,10 +54,10 @@ class RbacController extends Controller
         $auth->addChild($admin, $updateImage);
         $auth->addChild($admin, $user);
         
-        // Назначение ролей пользователям. 1 и 2 это IDs возвращаемые IdentityInterface::getId()
+        // Назначение ролей пользователям. 1 и 3 это IDs возвращаемые IdentityInterface::getId()
         // обычно реализуемый в модели User.
         $auth->assign($admin, 1);
         $auth->assign($user, 3);
-        
+        $auth->assign($user, 4);
     }
 }
