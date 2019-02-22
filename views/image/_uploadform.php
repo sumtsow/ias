@@ -21,7 +21,7 @@ use yii\bootstrap\ActiveForm;
   
         </div>
         <div class="col">    
-        <?= $form->field($model, 'imageFile',['inputOptions' => ['class' => 'form-control']])->textInput(['value' => 'http://www.somehost.dom'])->label('or enter its URL:', ['class' => 'font-weight-bold']) ?>
+        <?= $form->field($model, 'imageFile',['inputOptions' => ['class' => 'form-control']])->textInput(['value' => 'http://localhost/phpmyadmin/themes/pmahomme/img/logo_right.png'])->label('or enter its URL:', ['class' => 'font-weight-bold']) ?>
         </div>
     </div>    
     <div class="row">

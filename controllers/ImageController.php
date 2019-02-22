@@ -126,11 +126,12 @@ class ImageController extends Controller
 
         if (Yii::$app->request->isPost) {
             $result = Yii::$app->request->post('UploadForm')['imageFile'];
+            $fname = basename($result);
             if(is_string($result)) {
-                if(file_exists($result)) {
-                    copy($result, '@web/img/imageFile');
+                if(!copy($result, 'img/'.$fname)) {
+                    return $this->redirect(['/', 'errors' => 'File not found']);
                 }
-                else { return $this->redirect(['/', 'errors' => 'File not found']); }
+                $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
             }
             else {
                 $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
