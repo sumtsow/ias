@@ -125,7 +125,16 @@ class ImageController extends Controller
         $model = new UploadForm();
 
         if (Yii::$app->request->isPost) {
-            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            $result = Yii::$app->request->post('UploadForm')['imageFile'];
+            if(is_string($result)) {
+                if(file_exists($result)) {
+                    copy($result, '@web/img/imageFile');
+                }
+                else { return $this->redirect(['/', 'errors' => 'File not found']); }
+            }
+            else {
+                $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            }
             if ($model->upload()) {
                 // file is uploaded successfully
                 $image = new Image();
@@ -138,7 +147,7 @@ class ImageController extends Controller
                 $image->created_at = date('Y-m-d H:i:s');
                 $result = Image::searchMd5($image->hash);
                 if($result) {
-                    return $this->redirect(['/image/'.$result->id, 'message' => 'Image aready exist in database!']);
+                    return $this->redirect(['/image/'.$result->id, 'message' => 'Image aready exists in database!']);
                 }
                 else {
                     $image->save(false);

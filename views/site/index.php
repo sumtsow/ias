@@ -13,6 +13,7 @@ $this->title = 'Пошук зображень';
             <?= $this->render('/image/_uploadform', [
                 'model' => new UploadForm(),
             ]) ?>
-        </div>        
+        </div>
+        <h4><?= $errors ?></h4>
     </div>
 </div>

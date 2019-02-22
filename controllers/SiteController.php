@@ -69,6 +69,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $errors = Yii::$app->request->get('errors');
         $identity = Yii::$app->user->identity;
         if(!$identity) {
             $access_token = Yii::$app->request->get('access_token');
@@ -81,7 +82,9 @@ class SiteController extends Controller
                     $identity->save(false);
                 }            
         }
-        return $this->render('index');
+        return $this->render('index', [
+            'errors' => $errors,
+        ]);
     }
     
     /**
