@@ -1,6 +1,7 @@
 <?php
 
 use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Image */
@@ -17,11 +18,12 @@ use yii\bootstrap\ActiveForm;
     ]) ?>
     <div class="row">
         <div class="col">
+        <?= $form->field($model, 'imageFile', ['inputOptions' => ['name' => 'MAX_FILE_SIZE', 'value' => '30000', 'class' => 'form-control-file d-none']])->hiddenInput()->label('', ['class'=> 'd-none']) ?>    
         <?= $form->field($model, 'imageFile',['inputOptions' => ['class' => 'form-control-file border rounded text-lg']])->fileInput()->label('Select image file', ['class' => 'font-weight-bold']) ?>
   
         </div>
-        <div class="col">    
-        <?= $form->field($model, 'imageFile',['inputOptions' => ['class' => 'form-control']])->textInput(['value' => 'http://localhost/phpmyadmin/themes/pmahomme/img/logo_right.png'])->label('or enter its URL:', ['class' => 'font-weight-bold']) ?>
+        <div class="col pt-3">    
+        <?= $form->field($model, 'imageFile',['inputOptions' => ['class' => 'form-control']])->textInput()->label('or enter its URL:', ['class' => 'font-weight-bold']) ?>
         </div>
     </div>    
     <div class="row">

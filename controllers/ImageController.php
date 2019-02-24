@@ -126,16 +126,31 @@ class ImageController extends Controller
 
         if (Yii::$app->request->isPost) {
             $result = Yii::$app->request->post('UploadForm')['imageFile'];
-            $fname = basename($result);
+            /*
+             * $_FILES['UploadForm'] == $GLOBALS['_FILES']['UploadForm'] => [
+             *   'name' => ['imageFile' => 'file.png'],
+             *   'type' => ['imageFile' => 'image/png'],
+             *   'tmp_name' => ['imageFile' => /tmp/phpfuNHhV'],
+             *   'error' => ['imageFile' => 0 ],
+             *   'size' => ['imageFile' => 20703 ],
+             * ]
+             */
+            $imageinfo = pathinfo($result);
+            $tmp_name = '/tmp/phpfu'.bin2hex(random_bytes(3));
             if(is_string($result)) {
-                if(!copy($result, 'img/'.$fname)) {
+                if(!copy($result, $tmp_name)) {
                     return $this->redirect(['/', 'errors' => 'File not found']);
                 }
-                $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+                else {
+                    $_FILES['UploadForm']['name']['imageFile'] = $imageinfo['basename'];
+                    $_FILES['UploadForm']['type']['imageFile'] = 'image/'.$imageinfo['extension'];
+                    $_FILES['UploadForm']['tmp_name']['imageFile'] = $tmp_name;
+                    $_FILES['UploadForm']['error']['imageFile'] = 0;
+                    $_FILES['UploadForm']['size']['imageFile'] = filesize($tmp_name);
+                }
             }
-            else {
-                $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            }
+                $imageFile = UploadedFile::getInstance($model, 'imageFile');
+                $model->imageFile = $imageFile;            
             if ($model->upload()) {
                 // file is uploaded successfully
                 $image = new Image();
@@ -157,7 +172,7 @@ class ImageController extends Controller
                 }
             }
         }
-        return $this->render('/', ['model' => $model]);
+        return $this->redirect('/');
     }
         
     /**
