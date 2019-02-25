@@ -35,7 +35,7 @@ use yii\helpers\Html;
   
         </div>
         <div class="col pt-3">    
-        <?= $form->field($model, 'imageFile',['inputOptions' => ['class' => 'form-control p-0', 'style' => 'height: 27px;', 'id' => 'url', 'onClick' => 'disableFile();']])->textInput()->label('or enter its URL:', ['class' => 'font-weight-bold']) ?>
+        <?= $form->field($model, 'imageFile',['inputOptions' => ['class' => 'form-control p-0', 'id' => 'url', 'onClick' => 'disableFile();']])->textInput()->label('or enter its URL:', ['class' => 'font-weight-bold']) ?>
         </div>
     </div>    
     <div class="row">

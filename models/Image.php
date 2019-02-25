@@ -46,7 +46,7 @@ class Image extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'user_id', 'filename', 'source', 'size', 'content', 'hash', 'created_at'], 'required'],
+            [['id', 'user_id', 'filename', 'source', 'size', 'hash', 'created_at'], 'required'],
             [['user_id', 'size'], 'integer'],
             [['content'], 'string'],
             [['created_at'], 'safe'],
