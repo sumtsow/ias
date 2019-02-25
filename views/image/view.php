@@ -14,7 +14,6 @@ Image::clearDir();
 $model->toFile();
 ?>
 <h1><?= Html::encode($this->title) ?></h1>
-<h2><?= Html::encode($message) ?></h2>
 <p>
 <?php if(Yii::$app->user->can('admin')) :    
 echo Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary mr-3']);
@@ -36,7 +35,7 @@ endif; ?>
     </div>
     <div class="card-body"><img src="/img/<?= $model->filename; ?>" alt="<?= $model->filename; ?>" /></div>
     <div class="card-header bg-info text-light">
-        Source: <?= Html::encode($model->source) ?><br />
+        Source: <?= ($model->source !== 'local') ? '<a class="text-light" target="_blank" href="'.$model->source.'">' : null ?><?= Html::encode($model->source) ?><?= ($model->source !== 'local') ? '</a>' : null ?><br />
         Size: <?= Html::encode($model->size) ?> bytes<br />
         Owner: <?= Html::encode($owner) ?><br />        
         MD-5 hash: <?= Html::encode($model->hash) ?><br />

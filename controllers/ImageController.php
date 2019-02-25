@@ -87,12 +87,20 @@ class ImageController extends Controller
     {
         $model = Image::findOne($id);
         $user = User::findOne($model->user_id);
-        $message = Yii::$app->request->get('message');
         $owner = $user->lastname.' '.$user->firstname;
         return $this->render('view', [
             'model' => $model,
             'owner' => $owner,
-            'message' => $message,
+        ]);
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function actionResult($id)
+    {
+        return $this->render('result', [
+            'model' => Image::findOne($id),
         ]);
     }
     
@@ -123,53 +131,32 @@ class ImageController extends Controller
     public function actionUpload()
     {
         $model = new UploadForm();
-
         if (Yii::$app->request->isPost) {
-            $result = Yii::$app->request->post('UploadForm')['imageFile'];
-            /*
-             * $_FILES['UploadForm'] == $GLOBALS['_FILES']['UploadForm'] => [
-             *   'name' => ['imageFile' => 'file.png'],
-             *   'type' => ['imageFile' => 'image/png'],
-             *   'tmp_name' => ['imageFile' => /tmp/phpfuNHhV'],
-             *   'error' => ['imageFile' => 0 ],
-             *   'size' => ['imageFile' => 20703 ],
-             * ]
-             */
-            $imageinfo = pathinfo($result);
-            $tmp_name = '/tmp/phpfu'.bin2hex(random_bytes(3));
-            if(is_string($result)) {
-                if(!copy($result, $tmp_name)) {
-                    return $this->redirect(['/', 'errors' => 'File not found']);
-                }
-                else {
-                    $_FILES['UploadForm']['name']['imageFile'] = $imageinfo['basename'];
-                    $_FILES['UploadForm']['type']['imageFile'] = 'image/'.$imageinfo['extension'];
-                    $_FILES['UploadForm']['tmp_name']['imageFile'] = $tmp_name;
-                    $_FILES['UploadForm']['error']['imageFile'] = 0;
-                    $_FILES['UploadForm']['size']['imageFile'] = filesize($tmp_name);
-                }
+            $url = Yii::$app->request->post('UploadForm')['imageFile'];
+            if($url) {
+                Image::loadFromUrl($url, 'UploadForm', 'imageFile');
             }
-                $imageFile = UploadedFile::getInstance($model, 'imageFile');
-                $model->imageFile = $imageFile;            
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            $dir = sys_get_temp_dir();
             if ($model->upload()) {
-                // file is uploaded successfully
+                // image is uploaded successfully
                 $image = new Image();
                 $image->hash = Image::toHash($model->content);                
                 $image->user_id = Yii::$app->user->getId();
                 $image->filename = $model->imageFile->name;
-                $image->source = 'local';
+                $image->source = ($url) ? $url : 'local';
                 $image->size = $model->imageFile->size;
                 $image->content = $model->content;
                 $image->created_at = date('Y-m-d H:i:s');
                 $result = Image::searchMd5($image->hash);
-                if($result) {
-                    return $this->redirect(['/image/'.$result->id, 'message' => 'Image aready exists in database!']);
-                }
-                else {
+                if(!$result) {
                     $image->save(false);
                     $image->addCategory(1);
-                    return $this->redirect('/image');
                 }
+                return $this->render('/image/result',[
+                    'model' => $image,
+                    'result' => $result,
+                ]);
             }
         }
         return $this->redirect('/');

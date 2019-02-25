@@ -31,7 +31,15 @@ class Image extends \yii\db\ActiveRecord
     {
         return 'image';
     }
-
+    
+    /**
+     * {@inheritdoc}
+     */
+    public static function getCount()
+    {
+        return count(self::find()->all());
+    }
+    
     /**
      * {@inheritdoc}
      */
@@ -113,6 +121,44 @@ class Image extends \yii\db\ActiveRecord
     {
         return file_put_contents('img/'.$this->filename, $this->content);
     }
+
+    /**
+     * @return int bytes or false
+     */
+    public static function urlExists($url)
+    {
+        $urlHeaders = @get_headers($url);
+        // проверяем ответ сервера на наличие кода: 200 - ОК
+        if(strpos($urlHeaders[0], '200')) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }    
+    
+    /**
+     * @return boolean
+     */
+    public static function loadFromUrl($url, $form, $element)
+    {
+        if(is_string($url) && self::urlExists($url)) {
+            $imageinfo = pathinfo($url);
+            $tmp_name = sys_get_temp_dir().'/phpfu'.bin2hex(random_bytes(3));
+            if(!copy($url, $tmp_name)) {
+                return false;
+            }
+            else {
+                $_FILES[$form]['name'][$element] = $imageinfo['basename'];
+                $_FILES[$form]['type'][$element] = 'image/'.$imageinfo['extension'];
+                $_FILES[$form]['tmp_name'][$element] = $tmp_name;
+                $_FILES[$form]['error'][$element] = 0;
+                $_FILES[$form]['size'][$element] = filesize($tmp_name);
+            }
+            return true;
+        }
+        return false;
+    }
         
     /**
      * @return boolean
@@ -131,7 +177,7 @@ class Image extends \yii\db\ActiveRecord
      */
     public static function searchMd5($hash)
     {
-        return self::findOne(['hash' => $hash]);
+        return self::find()->where(['hash' => $hash])->all();
     }
 
     /**
