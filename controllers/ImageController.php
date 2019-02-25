@@ -146,7 +146,7 @@ class ImageController extends Controller
                 $image->filename = $model->imageFile->name;
                 $image->source = ($url) ? $url : 'local';
                 $image->size = $model->imageFile->size;
-                $image->content = $model->content;
+                $image->content = ($url) ? '' : $model->content;
                 $image->created_at = date('Y-m-d H:i:s');
                 $result = Image::searchMd5($image->hash);
                 if(!$result) {

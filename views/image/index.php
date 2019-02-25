@@ -23,7 +23,7 @@ Image::clearDir();
 <h1>
 <?= Html::encode($this->title) ?>
 <?php if(Yii::$app->user->can('createImage')) : ?>
-<a class="btn btn-light border-info mx-3" href="<?= Url::to('/'); ?>">Create Image</a>
+<a class="btn btn-primary mx-3" href="<?= Url::to('/'); ?>">Create Image</a>
 <?php endif; ?>    
 </h1>
 

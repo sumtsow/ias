@@ -80,7 +80,15 @@ class Image extends \yii\db\ActiveRecord
     {
         return $this->id;
     }
-
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getContent()
+    {
+        return ($this->source !== 'local') ? file_get_contents($this->source) : $this->content;
+    }
+    
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -119,7 +127,7 @@ class Image extends \yii\db\ActiveRecord
      */
     public function toFile()
     {
-        return file_put_contents('img/'.$this->filename, $this->content);
+        return file_put_contents('img/'.$this->filename, $this->getContent());
     }
 
     /**

@@ -78,8 +78,8 @@ class UserController extends Controller
         if ($user->load(Yii::$app->request->post())) {
             if ($user->validate()) {
                 $user->hashPassword($user->password);
+                $user->save(false);                 
                 $user->sendRegistrationMail();
-                $user->save(false);                
                 $auth = Yii::$app->authManager;
                 $auth->assign($auth->getRole('user'), $user->getId());
             }

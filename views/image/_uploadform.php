@@ -8,9 +8,16 @@ use yii\helpers\Html;
 /* @var $form yii\bootstrap\ActiveForm */
 ?>
 <script>
-    function clearInput() {
-        this.document.getElementById('url').value = '';
+    function disableFile() {
+        this.document.getElementById('uploadform-imagefile').value = '';
+        this.document.getElementById('uploadform-imagefile').readonly = 1;
+        this.document.getElementById('url').readonly = 0;
     }
+    function disableUrl() {
+        this.document.getElementById('url').value = '';
+        this.document.getElementById('url').readonly = 1;
+        this.document.getElementById('uploadform-imagefile').readonly = 0;
+    }    
 </script>
     
 <div class="form-group">
@@ -24,11 +31,11 @@ use yii\helpers\Html;
     <div class="row">
         <div class="col">
         <?= $form->field($model, 'imageSize', ['inputOptions' => ['name' => 'MAX_FILE_SIZE', 'value' => '8000000', 'class' => 'form-control-file d-none']])->hiddenInput()->label('', ['class'=> 'd-none']) ?>    
-        <?= $form->field($model, 'imageFile',['inputOptions' => ['class' => 'form-control-file border rounded text-lg', 'onClick' => 'clearInput();']])->fileInput()->label('Select image file', ['class' => 'font-weight-bold']) ?>
+        <?= $form->field($model, 'imageFile',['inputOptions' => ['class' => 'form-control-file border rounded text-lg', 'onClick' => 'disableUrl();']])->fileInput()->label('Select image file', ['class' => 'font-weight-bold']) ?>
   
         </div>
         <div class="col pt-3">    
-        <?= $form->field($model, 'imageFile',['inputOptions' => ['class' => 'form-control p-0', 'style' => 'height: 27px;', 'id' => 'url']])->textInput()->label('or enter its URL:', ['class' => 'font-weight-bold']) ?>
+        <?= $form->field($model, 'imageFile',['inputOptions' => ['class' => 'form-control p-0', 'style' => 'height: 27px;', 'id' => 'url', 'onClick' => 'disableFile();']])->textInput()->label('or enter its URL:', ['class' => 'font-weight-bold']) ?>
         </div>
     </div>    
     <div class="row">

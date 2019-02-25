@@ -1,6 +1,5 @@
 <?php
 
-use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use app\models\Image;
 
@@ -15,12 +14,15 @@ $model->toFile();
 ?>
 <h1><?= Html::encode($this->title) ?></h1>
 <div class="card border-info">
+    <div class="card-header bg-info text-light h5">
+        <?= Html::encode($model->filename) ?>
+    </div>
     <div class="card-body">
-        <div class="row">
-            <div class="col">
-                <img src="/img/<?= $model->filename; ?>" alt="<?= $model->filename; ?>" />
+        <div class="d-flex bd-highlight">
+            <div class="col bd-highlight">
+                <img class="w-100" src="/img/<?= $model->filename; ?>" alt="<?= $model->filename; ?>" />
             </div>
-            <div class="col w-50">
+            <div class="col flex-shrink-1 bd-highlight">
                 <h3>Your image is <?= ($result) ? '' : 'not' ?> found in the search database!</h3>
                 <h4><?= count($result) ?> result(s)</h4>
                 <p>Searched <?= Image::getCount() ?> images for <?= Html::encode($model->filename) ?></p>   

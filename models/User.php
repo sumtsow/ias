@@ -29,7 +29,7 @@ class User extends ActiveRecord implements IdentityInterface
     //public $username;
     //public $password;
     //public $authKey;
-    //public $accessToken;
+    public $accessToken;
     //public $role;
     
     public $password_repeat;
@@ -151,7 +151,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [['lastname', 'firstname', 'email', 'password', 'password_repeat'], 'required'],
-            [['created_at'], 'safe'],
+            [['created_at', 'access_token'], 'safe'],
             [['lastname', 'firstname', 'email'], 'string', 'max' => 256],
             [['auth_key', 'access_token'], 'string', 'max' => 128],            
             [['password','password_repeat'], 'string', 'max' => 64],
