@@ -146,7 +146,7 @@ class UserController extends Controller
         {
             $user->enabled = !$user->enabled;
             $user->save(false);
-            return $this->redirect('/users'); 
+            return $this->redirect('/user'); 
         }
         return $this->goBack();       
     }
@@ -160,7 +160,7 @@ class UserController extends Controller
         if ($user)
         {
             ($user->role == 'user') ? $user->setRole('admin') : $user->setRole('user');
-            return $this->redirect('/users'); 
+            return $this->redirect('/user'); 
         }
         return $this->goBack();       
     }
@@ -174,7 +174,7 @@ class UserController extends Controller
         if ($user)
         {
             $user->delete();
-            return $this->redirect('/users'); 
+            return $this->redirect('/user'); 
         }
         return $this->goBack();       
     }
