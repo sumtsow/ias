@@ -226,12 +226,11 @@ class User extends ActiveRecord implements IdentityInterface
      */    
     public function sendRegistrationMail()
     {
-        $sender = Yii::$app->params['adminEmail'];
         return Yii::$app->mailer->compose()
-            ->setFrom($sender)
+            ->setFrom(Yii::$app->mailer->transport->getUsername())
             ->setTo($this->email)
             ->setSubject('Registration on NURE IRS Service')
-            ->setHtmlBody('<p>Click here to confirm registration on <a href="irs?access_token='.$this->access_token.'">NURE IRS</a></p>')
+            ->setHtmlBody('<p>Click here to confirm registration on <a href="'.Yii::$app->request->getServerName().'?access_token='.$this->access_token.'">NURE IRS</a></p>')
             ->send();
     }
 }

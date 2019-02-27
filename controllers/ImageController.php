@@ -33,8 +33,13 @@ class ImageController extends Controller
                         'actions' => ['own', 'update', 'delete'],
                         'roles' => ['updateImage'],
                         'roleParams' => function($rule) {
-                            $id = (Yii::$app->request->get('user_id')) ? Yii::$app->request->get('user_id') : Yii::$app->request->get('id');
-                            return ['image' => Image::findOne($id)];
+                            if (Yii::$app->request->get('user_id')) {
+                                $image = Image::findOne(['user_id' => Yii::$app->request->get('user_id')]);
+                            }
+                            else {
+                                $image = Image::findOne(Yii::$app->request->get('id'));
+                            }
+                            return ['image' => $image];
                         },
                     ],                                
                 ],
