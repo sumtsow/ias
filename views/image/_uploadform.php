@@ -30,7 +30,7 @@ use yii\helpers\Html;
     ]) ?>
     <div class="row">
         <div class="col">
-        <?= $form->field($model, 'imageSize', ['inputOptions' => ['name' => 'MAX_FILE_SIZE', 'value' => '8000000', 'class' => 'form-control-file d-none']])->hiddenInput()->label('', ['class'=> 'd-none']) ?>    
+        <?= $form->field($model, 'imageSize', ['inputOptions' => ['name' => 'MAX_FILE_SIZE', 'value' => '8000000', 'class' => 'form-control-file d-none']])->hiddenInput()->label('', ['hidden' => 'hidden', 'for' => null]) ?>    
         <?= $form->field($model, 'imageFile',['inputOptions' => ['class' => 'form-control-file border rounded text-lg', 'onClick' => 'disableUrl();']])->fileInput()->label('Select image file', ['class' => 'font-weight-bold']) ?>
   
         </div>

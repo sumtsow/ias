@@ -14,6 +14,6 @@ $this->title = 'Пошук зображень';
                 'model' => new UploadForm(),
             ]) ?>
         </div>
-        <h4><?= $errors ?></h4>
+        <?= ($errors) ? '<h4>'.$errors.'</h4>' : '' ?>
     </div>
 </div>
